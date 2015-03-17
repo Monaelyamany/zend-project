@@ -21,14 +21,33 @@ class UserController extends Zend_Controller_Action
     
     public function addAction()
     {
+       
        $form  = new Application_Form_Register();
        
        if($this->_request->isPost()){
            if($form->isValid($this->_request->getParams())){
                $user_info = $form->getValues();
+               $email=$form->getValue("email");
+               $name=$form->getValue("name");
+               $country=$form->getValue("countries");
+               
+               echo $email;
                $user_model = new Application_Model_User();
                $user_model->addUser($user_info);
-        
+               //to resend in adefault place
+                  
+               $tr = new Zend_Mail_Transport_Sendmail('-freturn_to_grm3zend@example.com');
+                Zend_Mail::setDefaultTransport($tr);
+                // create object from zend_mail class
+                    $myemail=new Zend_Mail();
+                    // body of email
+                    $myemail->setBodyText("hi $name  your email is:$email and your country is:$country ")
+                            ->setFrom('grm3zend@gmail.com')//the sender
+                            ->addTo($email)//the receiver
+                            ->setSubject('Greetings and Salutations!')//subject
+                            ->send();//function to send email
+
+                   
            }
        }
        
