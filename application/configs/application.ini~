@@ -11,7 +11,7 @@ resources.frontController.params.displayExceptions = 1
 resources.db.adapter = "Pdo_Mysql"
 resources.db.params.host = "localhost"
 resources.db.params.username = "root"
-resources.db.params.password = "12345678"
+resources.db.params.password = "admin"
 resources.db.params.dbname = "zenddb"
 resources.layout.layoutPath = APPLICATION_PATH "/layouts/scripts/"
 [staging : production]

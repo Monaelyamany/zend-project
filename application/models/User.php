@@ -15,6 +15,9 @@ class Application_Model_User extends Zend_Db_Table_Abstract
         $row->user_photo = $data['file'];
         return $row->save();
     }
+    function getUserById($id){
+        return $this->find($id)->toArray();
+    }
 
 }
 

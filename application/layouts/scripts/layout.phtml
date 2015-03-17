@@ -1,1 +1,47 @@
+
+<head>
+ <?php echo $this->headMeta(); ?>
+ <?php echo $this->headTitle() ?> 
+ <?php echo $this->headLink()->appendStylesheet(('http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')); ?>
+ <?php echo $this->headLink()->appendStylesheet(('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')); ?>
+ <?php echo $this->headScript()->prependFile((''
+         . 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')) ?> 
+ <?php echo $this->headScript()->prependFile(('http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js')) ?> 
+</head>
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        
+        <li><a href="#"> Products </a></li>
+        <li><a href="http://localhost/PHP-Project/docs/All_Users.php"> Users </a></li>
+        <li><a href="#"> Manual Orders </a></li>
+        <li><a href="http://localhost/PHP-Project/docs/Checks.php"> Checks </a></li>
+
+      </ul>
+
+      
+      <ul class="nav navbar-nav navbar-right">
+
+      
+        <li><a href="http://localhost/PHP-Project/docs/Forget_Password.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        <li><p class='navbar-text' ><?php  echo "welcome "?> </p></li>
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
 <?php echo $this->layout()->content; ?>
