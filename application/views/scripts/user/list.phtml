@@ -1,0 +1,63 @@
+
+<html>
+    <div id="view-content">
+        <p>View script for controller <b>User</b> and script/action name <b>list</b></p>
+    </div>
+
+    <table border="1">
+        <tr>
+            <td>User Name</td>
+            <td>Gender</td>
+            <td>Country</td>
+            <td>Signature</td>
+            <td>Email</td>
+            <td>User_photo</td>
+            <td>Admin/User</td>
+            <td>Banned Users</td>
+            <td>Edit</td>
+            <td>Delete</td>
+
+
+        </tr>
+
+        <?php
+        for ($i = 0; $i < count($this->users); $i++) {
+            echo '<tr>';
+            foreach ($this->users[$i] as $key => $value):
+                if ($key != 'user_id' && $key != 'password') {
+                    echo '<td>';
+                    if ($key == 'user_photo') {
+                        echo "<img src='/zend-project/images/users/$value' width='80' height='80'/>";
+                    } elseif ($key == 'is_admin') {
+                        if ($value == '1') {
+                            echo '<button type="button" onclick=updateuser()>Admin</button>';
+                        } else {
+                            echo '<button type="button">User</button>';
+                        }
+                    }elseif ($key == 'is_banned') {
+                        if ($value == '1') {
+                            echo '<button type="button">Banned User</button>';
+                        } else {
+                            echo '<button type="button">Not Banned</button>';
+                        }
+                    }
+                    
+                    else {
+                        echo $value;
+                    }
+                }
+            endforeach;
+            ?>
+            <td>
+                <a href="<?php echo $this->baseUrl() ?>/user/edit/user_id/<?php echo $this->users[$i]['user_id']; ?>" > Edit </a>
+            </td>
+            <td>
+                <a href="<?php echo $this->baseUrl() ?>/user/delete/user_id/<?php echo $this->users[$i]['user_id']; ?>" > Delete </a>
+            </td>
+        </tr>
+    <?php
+}
+
+?>
+</table>
+</html>

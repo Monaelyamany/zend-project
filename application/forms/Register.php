@@ -7,9 +7,9 @@ class Application_Form_Register extends Zend_Form
     {
         $this->setMethod("post");
         
-        $id = new Zend_Form_Element_Hidden("id");
+        $id = new Zend_Form_Element_Hidden("user_id");
         
-        $username = new Zend_Form_Element_Text("name");
+        $username = new Zend_Form_Element_Text("user_name");
         $username->setAttrib("class", "form-control");
         $username->setLabel("Username: ");
         $username->setRequired();
@@ -20,8 +20,8 @@ class Application_Form_Register extends Zend_Form
                 ->setLabel("Gender:")
                 ->addMultiOptions(array(
                     'S'=>'select',
-                    'M' => 'Male',
-                    'F' => 'Female'));
+                    'Male' => 'Male',
+                    'Female' => 'Female'));
         
         
     
@@ -34,7 +34,7 @@ class Application_Form_Register extends Zend_Form
         $signature->addFilter(new Zend_Filter_StripTags);
         
         
-        $email = new Zend_Form_Element_Text("email");
+        $email = new Zend_Form_Element_Text("user_email");
         $email->setRequired()
                 ->setLabel("Email:")
                  ->addValidator(new Zend_Validate_EmailAddress())
@@ -43,7 +43,7 @@ class Application_Form_Register extends Zend_Form
                   'field' => 'user_email')));
         
         
-        $country = new Zend_Form_Element_Select("countries");
+        $country = new Zend_Form_Element_Select("country");
         $country->setRequired()
                 ->setLabel("country:")
                 ->addMultiOptions(array(
@@ -55,10 +55,10 @@ class Application_Form_Register extends Zend_Form
         $password->setRequired()
                  ->setLabel("Password");
         
-        $photo = new Zend_Form_Element_File("file");
+        $photo = new Zend_Form_Element_File("user_photo");
         $photo->setLabel("Profile picture :")
                 ->setRequired()
-                ->setDestination('/var/www/GRM/images/users');
+                ->setDestination('/var/www/html/zend-project/images/users/');
             
 
         $submit = new Zend_Form_Element_Submit("submit");
