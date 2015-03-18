@@ -10,7 +10,6 @@ class Application_Form_Register extends Zend_Form
         $id = new Zend_Form_Element_Hidden("user_id");
         
         $username = new Zend_Form_Element_Text("user_name");
-        $username->setAttrib("class", "form-control");
         $username->setLabel("Username: ");
         $username->setRequired();
         $username->addFilter(new Zend_Filter_StripTags);
@@ -28,7 +27,6 @@ class Application_Form_Register extends Zend_Form
        
           
         $signature = new Zend_Form_Element_Text("signature");
-        $signature->setAttrib("class", "form-control");
         $signature->setLabel("signature: ");
         $signature->setRequired();
         $signature->addFilter(new Zend_Filter_StripTags);
