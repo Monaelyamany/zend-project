@@ -21,9 +21,10 @@ class Application_Model_Category extends Zend_Db_Table_Abstract
     }
             
     function editCategory($data){
-        return $this->update($data, "category_id=".$data['category_id']);
-         
+        return $this->update($data, "category_id=".$data['category_id']);     
     }
+    
+
 
 }
 

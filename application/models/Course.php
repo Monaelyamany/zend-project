@@ -28,4 +28,14 @@ class Application_Model_Course extends Zend_Db_Table_Abstract {
          
     }
 
+    function deleteCourse($id) {
+        return $this->delete("course_id=$id");
+    }
+
+    function getCourseByName($name) {
+         $course_data=$this->fetchAll($where = array('course_name = ?' => $name))->toArray();
+         return $course_data[0]['course_id'];
+        
+    }
+
 }
