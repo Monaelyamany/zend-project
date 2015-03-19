@@ -54,5 +54,37 @@ class CourseController extends Zend_Controller_Action {
         }
         $this->view->courses = $allcatcourse;
     }
+    
+    
+    public function editAction() {
+        
+        $course_name = $this->_request->getParam("course_name");
+        $form = new Application_Form_Course();
+        if ($this->_request->isPost()) {
+            $form->getElement("course_id")
+                 ->removeValidator('Db_NoRecordExists');
+            
+              if ($form->isValid($this->_request->getParams())) {
+                $course_info = $form->getValues();
+                $course_model = new Application_Model_Course();
+                $row = $course_model->editcourse($course_info);
+                $this->redirect("course/list");
+            }
+        }
+        if (!empty($id)) {
+            $course_model = new Application_Model_Course();
+            $course = $course_model->getCourseById($id);     
+            $form->populate($course[0]);
+            
+
+           
+           
+        } else
+            $this->redirect("course/list");
+            
+
+            $this->view->form = $form;
+            $this->render('add');
+    }
 
 }

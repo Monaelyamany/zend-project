@@ -3,12 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/zend-project/application/models/User.php</file>
-            <file>file:/var/www/html/zend-project/application/views/scripts/user/add.phtml</file>
-            <file>file:/var/www/html/zend-project/application/controllers/UserController.php</file>
-            <file>file:/var/www/html/zend-project/application/views/scripts/user/list.phtml</file>
-            <file>file:/var/www/html/zend-project/application/forms/Register.php</file>
-            <file>file:/var/www/html/zend-project/application/controllers/CategoryController.php</file>
+            <file>file:/var/www/zend-project/application/controllers/UserController.php</file>
         </group>
     </open-files>
 </project-private>

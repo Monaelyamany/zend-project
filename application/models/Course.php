@@ -21,5 +21,11 @@ class Application_Model_Course extends Zend_Db_Table_Abstract {
     function getCourseById($id) {
         return $this->find($id)->toArray();
     }
+    
+    
+     function editCourse($data){
+        return $this->update($data, "course_id=".$data['course_id']);
+         
+    }
 
 }

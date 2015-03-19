@@ -31,7 +31,7 @@ class UserController extends Zend_Controller_Action {
                $user_model = new Application_Model_User();
                $user_model->addUser($user_info);
                //to resend in adefault place     
-               $tr = new Zend_Mail_Transport_Sendmail('-freturn_to_grm3zend@example.com');
+               $tr = new Zend_Mail_Transport_Sendmail('-freturn_to_grm3zend@gmail.com');
                 Zend_Mail::setDefaultTransport($tr);
                 // create object from zend_mail class
                     $myemail=new Zend_Mail();
