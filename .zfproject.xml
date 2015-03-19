@@ -34,6 +34,7 @@
       <formsDirectory>
         <formFile formName="Register"/>
         <formFile formName="Login"/>
+        <formFile formName="Material"/>
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>

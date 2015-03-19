@@ -58,11 +58,11 @@ class Application_Form_Register extends Zend_Form {
                 ->setDestination('/var/www/html/zend-project/images/users/');
 
 
+
         $submit = new Zend_Form_Element_Submit("submit");
         $submit->setAttrib('class', 'btn btn-primary');
 
 
         $this->addElements(array($id, $username, $email, $gender, $password, $signature, $country, $photo, $submit));
     }
-
 }
