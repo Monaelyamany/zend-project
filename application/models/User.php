@@ -24,16 +24,42 @@ class Application_Model_User extends Zend_Db_Table_Abstract {
         return $this->delete("user_id=$id");
     }
 
-    function getUserById($id){
+    function getUserById($id) {
         return $this->find($id)->toArray();
     }
-            
-    function editUser($data){
-        if(!empty($data['password']))
-            $data['password']=md5($data['password']);
+
+    function editUser($data) {
+        if (!empty($data['password']))
+            $data['password'] = md5($data['password']);
         else
-            unset ($data['password']);
-        return $this->update($data, "user_id=".$data['user_id']);
-         
+            unset($data['password']);
+        return $this->update($data, "user_id=" . $data['user_id']);
     }
+    
+    function adminUser($user) {
+        if($user[0]['is_admin']==1)
+        {
+            $user[0]['is_admin']="0";
+            return $this->update($user[0], "user_id=" . $user[0]['user_id']);
+        }
+        else
+        {
+            $user[0]['is_admin']="1";
+            return $this->update($user[0], "user_id=" . $user[0]['user_id']);
+        }
+    }
+
+    function banUnban($user) {
+        if($user[0]['is_banned']==1)
+        {
+            $user[0]['is_banned']="0";
+            return $this->update($user[0], "user_id=" . $user[0]['user_id']);
+        }
+        else
+        {
+            $user[0]['is_banned']="1";
+            return $this->update($user[0], "user_id=" . $user[0]['user_id']);
+        }
+    }    
+
 }

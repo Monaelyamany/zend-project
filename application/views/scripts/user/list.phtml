@@ -25,24 +25,31 @@
             echo '<tr>';
             foreach ($this->users[$i] as $key => $value):
                 if ($key != 'user_id' && $key != 'password') {
+                    $id=$this->users[$i]['user_id'];
                     echo '<td>';
                     if ($key == 'user_photo') {
                         echo "<img src='/zend-project/images/users/$value' width='80' height='80'/>";
                     } elseif ($key == 'is_admin') {
                         if ($value == '1') {
-                            echo '<button type="button" onclick=updateuser()>Admin</button>';
+                            echo 'Admin';
+                            echo '<br>';
+                            echo "<a href='./adminuser/user_id/$id'>To User </a>";
                         } else {
-                            echo '<button type="button">User</button>';
+                            echo 'User';
+                            echo '<br>';
+                            echo "<a href='./adminuser/user_id/$id'>To Admin </a>";
                         }
-                    }elseif ($key == 'is_banned') {
+                    } elseif ($key == 'is_banned') {
                         if ($value == '1') {
-                            echo '<button type="button">Banned User</button>';
+                            echo 'Banned';
+                            echo '<br>';
+                            echo "<a href='./banunban/user_id/$id'>Unban </a>";
                         } else {
-                            echo '<button type="button">Not Banned</button>';
+                            echo 'Unbanned';
+                            echo '<br>';
+                            echo "<a href='./banunban/user_id/$id'>Ban </a>";
                         }
-                    }
-                    
-                    else {
+                    } else {
                         echo $value;
                     }
                 }
@@ -55,9 +62,8 @@
                 <a href="<?php echo $this->baseUrl() ?>/user/delete/user_id/<?php echo $this->users[$i]['user_id']; ?>" > Delete </a>
             </td>
         </tr>
-    <?php
-}
-
-?>
+        <?php
+    }
+    ?>
 </table>
 </html>
