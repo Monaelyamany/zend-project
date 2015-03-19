@@ -5,8 +5,8 @@
         <group>
             <file>file:/var/www/html/zend-project/application/models/User.php</file>
             <file>file:/var/www/html/zend-project/application/controllers/UserController.php</file>
+            <file>file:/var/www/html/zend-project/application/layouts/scripts/layout.phtml</file>
             <file>file:/var/www/html/zend-project/application/views/scripts/user/list.phtml</file>
-            <file>file:/var/www/html/zend-project/application/forms/Register.php</file>
         </group>
     </open-files>
 </project-private>
