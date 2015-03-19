@@ -27,6 +27,9 @@ class UserController extends Zend_Controller_Action {
                $email=$form->getValue("user_email");
                $name=$form->getValue("user_name");
                $country=$form->getValue("country");
+               $gender = $form->getValue("gender");
+               $signature = $form->getValue("signature");
+                
                $user_model = new Application_Model_User();
                $user_model->addUser($user_info);
                //to resend in adefault place     
@@ -35,7 +38,7 @@ class UserController extends Zend_Controller_Action {
                 // create object from zend_mail class
                     $myemail=new Zend_Mail();
                     // body of email
-                    $myemail->setBodyText("hi $name  your email is:$email and your country is:$country ")
+                    $myemail->setBodyText("hi $name \n your email is:$email \n your gender is:$gender \n your signature is:$signature \n your country is:$country ")
                             ->setFrom('grm3zend@gmail.com')//the sender
                             ->addTo($email)//the receiver
                             ->setSubject('Greetings and Salutations!')//subject

@@ -55,8 +55,8 @@ class Application_Form_Register extends Zend_Form
         
         $photo = new Zend_Form_Element_File("user_photo");
         $photo->setLabel("Profile picture :")
-                ->setRequired()
-                ->setDestination('/var/www/html/zend-project/images/users/');
+                ->setRequired();
+                //->setDestination('/var/www/html/zend-project/images/users/');
             
 
         $submit = new Zend_Form_Element_Submit("submit");

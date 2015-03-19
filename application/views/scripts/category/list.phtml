@@ -1,0 +1,35 @@
+
+<html>
+    <div id="view-content">
+    </div>
+
+    
+        <h2>
+            Categories
+        </h2>
+
+        <?php
+        for ($i = 0; $i < count($this->categories); $i++) {
+            
+            foreach ($this->categories[$i] as $key => $value):
+                if ($key != 'category_id') {
+                    echo '<li>';
+                            echo $value;
+                    
+                    
+                }
+            endforeach;
+        ?>
+            
+                <a href="<?php echo $this->baseUrl() ?>/category/edit/category_id/<?php echo $this->categories[$i]['category_id']; ?>" > Edit </a>
+            
+            
+                <a href="<?php echo $this->baseUrl() ?>/category/delete/category_id/<?php echo $this->categories[$i]['category_id']; ?>" > Delete </a>
+          
+        
+    <?php
+}
+
+?>
+
+</html>
