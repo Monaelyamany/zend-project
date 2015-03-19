@@ -40,7 +40,7 @@ class CourseController extends Zend_Controller_Action {
         $course_model = new Application_Model_Course();
         $category_model = new Application_Model_Category();
         $allcatcourse = $catcourse_model->listAll();
-        
+
         for ($i = 0; $i < count($allcatcourse); $i++) {
             $cat_id = $allcatcourse[$i]['category_id'];
             $cat_data = $category_model->getCategoryById($cat_id);
@@ -50,9 +50,19 @@ class CourseController extends Zend_Controller_Action {
             $course_id = $allcatcourse[$i]['course_id'];
             $course_data = $course_model->getCourseById($course_id);
             $allcatcourse[$i]['course_id'] = $course_data[0]['course_name'];
-            
         }
         $this->view->courses = $allcatcourse;
+    }
+
+    public function deleteAction() {
+        $coursename = $this->_request->getParam("course_name");  
+        if (!empty($coursename)) {
+            $course_model=new Application_Model_Course();
+            $course_id=$course_model->getCourseByName($coursename);
+            
+            $course_model->deleteCourse($course_id);
+        }
+        $this->redirect("course/list");
     }
 
 }
