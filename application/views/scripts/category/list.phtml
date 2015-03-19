@@ -2,18 +2,25 @@
 <html>
     <div id="view-content">
     </div>
-
-    
-        <h2>
+    <h2>
             Categories
         </h2>
+    <table border="1">
+        <tr>
+            <th>Category Name</th> 
+            <th>Delete</th>
+            <th>Edit</th>
+            <th>Add Course</th>
+        </tr>
+    
+        
 
         <?php
         for ($i = 0; $i < count($this->categories); $i++) {
-            
+            echo '<tr>';
             foreach ($this->categories[$i] as $key => $value):
                 if ($key != 'category_id') {
-                    echo '<li>';
+                    echo '<td>';
                             echo $value;
                     
                     
@@ -21,15 +28,26 @@
             endforeach;
         ?>
             
-                <a href="<?php echo $this->baseUrl() ?>/category/edit/category_id/<?php echo $this->categories[$i]['category_id']; ?>" > Edit </a>
-            
-            
-                <a href="<?php echo $this->baseUrl() ?>/category/delete/category_id/<?php echo $this->categories[$i]['category_id']; ?>" > Delete </a>
-          
+        <td>
+        <a href="<?php echo $this->baseUrl() ?>/category/edit/category_id/<?php echo $this->categories[$i]['category_id']; ?>" > Edit </a>
         
+        </td>
+            
+            
+        <td>
+        <a href="<?php echo $this->baseUrl() ?>/category/delete/category_id/<?php echo $this->categories[$i]['category_id']; ?>" > Delete </a>
+        
+        </td>
+          
+        <td>
+        <a href="<?php echo $this->baseUrl() ?>/category//<?php echo $this->categories[$i]['category_id']; ?>" > Add </a>
+        
+        </td>
+    </tr>
     <?php
-}
+    }
 
-?>
+    ?>
+</table>
 
 </html>
