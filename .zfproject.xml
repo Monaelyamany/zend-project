@@ -35,6 +35,7 @@
         <formFile formName="Register"/>
         <formFile formName="Login"/>
         <formFile formName="Material"/>
+        <formFile formName="Course"/>
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>
@@ -44,6 +45,8 @@
         <modelFile modelName="Type"/>
         <modelFile modelName="Material"/>
         <modelFile modelName="Comment"/>
+        <modelFile modelName="Categorycourse"/>
+        <modelFile modelName="Catcourse"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
