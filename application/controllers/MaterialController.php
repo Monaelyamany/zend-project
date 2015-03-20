@@ -24,7 +24,7 @@ class MaterialController extends Zend_Controller_Action {
                 $material_model = new Application_Model_Material();
                 $material_model->addMaterial($course_id, $material_info);
                 //to resend in adefault place     
-//                $this->redirect("material/list");
+                $this->redirect("material/list");
             }
         }
         $this->view->category_name = $categoryname;
@@ -34,8 +34,45 @@ class MaterialController extends Zend_Controller_Action {
 
     public function listAction() {
         $material_model = new Application_Model_Material();
+        $catcourse_model = new Application_Model_Catcourse();
+        $category_model = new Application_Model_Category();
+        $course_model = new Application_Model_Course();
+
         $allmaterials = $material_model->listAll();
+
+        for ($i = 0; $i < count($allmaterials); $i++) {
+            $course_id = $allmaterials[$i]['course_id'];
+            $category_id = $catcourse_model->getCategoryId($course_id);
+
+            $cat_data = $category_model->getCategoryById($category_id);
+            $cat_name = $cat_data[0]['category_name'];
+
+            $course_data = $course_model->getCourseById($course_id);
+            $course_name = $course_data[0]['course_name'];
+            $cat_course_name = array('category_name' => $cat_name, 'course_name' => $course_name);
+            $allmaterials[$i]['course_id'] = $cat_course_name;
+        }
         $this->view->materials = $allmaterials;
+    }
+
+    function showhideAction() {
+        $id = $this->_request->getParam("material_id");
+        if (!empty($id)) {
+            $material_model = new Application_Model_Material();
+            $material = $material_model->getMaterialById($id);
+            $material_model->showHide($material);
+        }
+        $this->redirect("material/list");
+    }
+
+    function lockdownloadAction() {
+        $id = $this->_request->getParam("material_id");
+        if (!empty($id)) {
+            $material_model = new Application_Model_Material();
+            $material = $material_model->getMaterialById($id);
+            $material_model->lockDownload($material);
+        }
+        $this->redirect("material/list");
     }
 
 }

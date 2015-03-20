@@ -14,38 +14,38 @@ class UserController extends Zend_Controller_Action {
         // action body
     }
 
-        public function addAction()
-    {
-       
-       $form  = new Application_Form_Register();
-       
-       if($this->_request->isPost()){
-           if($form->isValid($this->_request->getParams())){
-               $user_info = $form->getValues();
-               $email=$form->getValue("user_email");
-               $name=$form->getValue("user_name");
-               $country=$form->getValue("country");
-               $gender = $form->getValue("gender");
-               $signature = $form->getValue("signature"); 
-               $user_model = new Application_Model_User();
-               $user_model->addUser($user_info);
-               //to resend in adefault place     
-               $tr = new Zend_Mail_Transport_Sendmail('-freturn_to_grm3zend@example.com');
-                Zend_Mail::setDefaultTransport($tr);
-                // create object from zend_mail class
-                    $myemail=new Zend_Mail();
-                    // body of email
-                    $myemail->setBodyText("hi $name \n your email is:$email \n your gender is:$gender \n your signature is:$signature \n your country is:$country ")
-                            ->setFrom('grm3zend@gmail.com')//the sender
-                            ->addTo($email)//the receiver
-                            ->setSubject('Greetings and Salutations!')//subject
-                            ->send();//function to send email 
-                    $this->redirect("user/list");
-           }
-       }
-       
-	$this->view->form = $form;
-}
+    public function addAction() {
+
+        $form = new Application_Form_Register();
+
+        if ($this->_request->isPost()) {
+            if ($form->isValid($this->_request->getParams())) {
+                $user_info = $form->getValues();
+                $email = $form->getValue("user_email");
+                $name = $form->getValue("user_name");
+                $country = $form->getValue("country");
+                $gender = $form->getValue("gender");
+                $signature = $form->getValue("signature");
+                $user_model = new Application_Model_User();
+                $user_model->addUser($user_info);
+                //to resend in adefault place     
+//               $tr = new Zend_Mail_Transport_Sendmail('-freturn_to_grm3zend@example.com');
+//                Zend_Mail::setDefaultTransport($tr);
+//                // create object from zend_mail class
+//                    $myemail=new Zend_Mail();
+//                    // body of email
+//                    $myemail->setBodyText("hi $name \n your email is:$email \n your gender is:$gender \n your signature is:$signature \n your country is:$country ")
+//                            ->setFrom('grm3zend@gmail.com')//the sender
+//                            ->addTo($email)//the receiver
+//                            ->setSubject('Greetings and Salutations!')//subject
+//                            ->send();//function to send email 
+                $this->redirect("user/list");
+            }
+        }
+
+        $this->view->form = $form;
+    }
+
     public function loginAction() {
         // remove element from user form
         $userForm = new Application_Form_Register();
