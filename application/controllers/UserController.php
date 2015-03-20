@@ -26,8 +26,7 @@ class UserController extends Zend_Controller_Action {
                $name=$form->getValue("user_name");
                $country=$form->getValue("country");
                $gender = $form->getValue("gender");
-               $signature = $form->getValue("signature");
-                
+               $signature = $form->getValue("signature"); 
                $user_model = new Application_Model_User();
                $user_model->addUser($user_info);
                //to resend in adefault place     

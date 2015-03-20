@@ -9,6 +9,7 @@
                             <tr class="info"> 
                                 <td class="text-center">Category Name</td>
                                 <td class="text-center">Course Name</td> 
+                                <td class="text-center">Material Name</td> 
                                 <td class="text-center">Edit</td>
                                 <td class="text-center">Delete</td>
                                 <td class="text-center">Add Material</td>
@@ -29,7 +30,7 @@
                                 endforeach;
                                 ?>
                                 <td class="text-center">
-                                    <a class="btn btn-info" href="<?php echo $this->baseUrl() ?>/course/edit/categoryname/<?php echo $this->courses[$i]['category_id']; ?>/coursename/<?php echo $this->courses[$i]['course_id']; ?>" > Edit </a>
+                                    <a class="btn btn-info" href="#" > Edit </a>
                                 </td>
                                 <td class="text-center">
                                     <a class="btn btn-danger" href="<?php echo $this->baseUrl() ?>/course/delete/course_name/<?php echo $this->courses[$i]['course_id']; ?>" > Delete </a>

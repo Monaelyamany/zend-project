@@ -55,14 +55,44 @@ class CourseController extends Zend_Controller_Action {
     }
 
     public function deleteAction() {
-        $coursename = $this->_request->getParam("course_name");  
+        $coursename = $this->_request->getParam("course_name");
         if (!empty($coursename)) {
-            $course_model=new Application_Model_Course();
-            $course_id=$course_model->getCourseByName($coursename);
-            
+            $course_model = new Application_Model_Course();
+            $course_id = $course_model->getCourseByName($coursename);
+
             $course_model->deleteCourse($course_id);
         }
         $this->redirect("course/list");
+    }
+
+    public function editAction() {
+        $coursename = $this->_request->getParam("coursename");
+        $categoryname = $this->_request->getParam("categoryname");
+        $form = new Application_Form_Course();
+        if ($this->_request->isPost()) {
+            $form->getElement("course_name")
+                    ->removeValidator('Db_NoRecordExists');
+            if ($form->isValid($this->_request->getParams())) {
+                $course_info = $form->getValues();
+                $course_model = new Application_Model_Course();
+                $course_model->editCourse($course_info);
+                $this->redirect("course/list");
+            }
+        }
+        if (!empty($coursename)) {
+            $course_model = new Application_Model_Course();
+            $course_id = $course_model->getCourseByName($coursename);
+            $course = $course_model->getCourseById($course_id);
+            $form->populate($course[0]);
+        } 
+        else
+            $this->redirect("course/list");
+
+
+
+        $this->view->category_name = $categoryname;
+        $this->view->form = $form;
+        $this->render('add');
     }
 
 }

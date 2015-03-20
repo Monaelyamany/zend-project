@@ -15,6 +15,4 @@ class Application_Model_Catcourse extends Zend_Db_Table_Abstract {
         return $this->fetchAll()->toArray();
     }
 
- 
-
 }
