@@ -39,7 +39,11 @@
         <formFile formName="Login"/>
         <formFile formName="Material"/>
         <formFile formName="Course"/>
+<<<<<<< HEAD
         <formFile formName="Request"/>
+=======
+        <formFile formName="Material"/>
+>>>>>>> ca57291e78209ab92617b653b69cb7aae6589905
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>

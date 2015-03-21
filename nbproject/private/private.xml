@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/zend-project/application/views/scripts/request/list.phtml</file>
-            <file>file:/var/www/zend-project/application/views/scripts/user/list.phtml</file>
-            <file>file:/var/www/zend-project/application/controllers/RequestController.php</file>
+            <file>file:/var/www/zend-project/application/controllers/CourseController.php</file>
+            <file>file:/var/www/zend-project/application/models/Course.php</file>
+            <file>file:/var/www/zend-project/application/forms/Material.php</file>
+            <file>file:/var/www/zend-project/application/configs/application.ini</file>
+            <file>file:/var/www/zend-project/application/controllers/UserController.php</file>
+            <file>file:/var/www/zend-project/application/forms/Register.php</file>
+            <file>file:/var/www/zend-project/application/layouts/scripts/layout.phtml</file>
+            <file>file:/var/www/zend-project/application/controllers/MaterialController.php</file>
+            <file>file:/var/www/zend-project/application/views/scripts/course/list.phtml</file>
         </group>
     </open-files>
 </project-private>

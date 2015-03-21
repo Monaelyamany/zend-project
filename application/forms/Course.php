@@ -13,7 +13,6 @@ class Application_Form_Course extends Zend_Form {
                 ->setAttrib('class', 'form-control');
 
         $coursename->setRequired();
-        $coursename->addFilter(new Zend_Filter_StripTags);
         $submit = new Zend_Form_Element_Submit("submit");
         $submit->setAttrib('class', 'btn btn-info');
 

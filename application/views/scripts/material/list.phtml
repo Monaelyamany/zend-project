@@ -1,0 +1,73 @@
+<html>
+    <body>
+        <div class="container">
+            <div class="row" 
+                 <div class="col-md-12">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover" style="margin-top: 20px ">
+                            <tr class="info"> 
+                                <td class="text-center">Category Name</td>
+                                <td class="text-center">Course Name</td> 
+                                <td class="text-center">Material Name</td>
+                                <td class="text-center">Show/Hidden</td>
+                                <td class="text-center">Download lock</td>
+                                <td class="text-center">Edit</td>
+                                <td class="text-center">Delete</td>
+                            </tr>
+                            <?php
+                            for ($i = 0; $i < count($this->materials); $i++) {
+                                echo '<tr>';
+                                foreach ($this->materials[$i] as $key => $value):
+                                    $id = $this->materials[$i]['material_id'];
+                                    if ($key != 'material_id') {
+                                        if ($key == 'course_id') {
+                                            foreach ($value as $key => $name) {
+                                                if ($key == 'category_name') {
+                                                    echo '<td class="text-center">';
+                                                    echo $name;
+                                                } else {
+                                                    echo '<td class="text-center">';
+                                                    echo $name;
+                                                }
+                                            }
+                                        } elseif ($key == 'is_show') {
+                                            echo '<td class="text-center">';
+                                            if ($value == '1') {
+                                                echo 'Show material';
+                                                echo '<br>';
+                                                echo "<a href='./showhide/material_id/$id'>Hide material </a>";
+                                            } else {
+                                                echo 'Hidden material';
+                                                echo '<br>';
+                                                echo "<a href='./showhide/material_id/$id'>Show material </a>";
+                                            }
+                                        } elseif ($key == 'download_lock') {
+                                            echo '<td class="text-center">';
+                                            if ($value == '1') {
+                                                echo 'Locked';
+                                                echo '<br>';
+                                                echo "<a href='./lockdownload/material_id/$id'>UnLock</a>";
+                                            } else {
+                                                echo 'Avalible to download';
+                                                echo '<br>';
+                                                echo "<a href='./lockdownload/material_id/$id'>Lock</a>";
+                                            }
+                                        } else {
+                                            echo '<td class="text-center">';
+                                            echo $value;
+                                        }
+                                    }
+
+                                endforeach;
+                                ?>
+                                <td class="text-center">
+                                    <a class="btn btn-info" href="#" > Edit </a>
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-danger" href="<?php echo $this->baseUrl() ?>/material/delete/material_id/<?php echo $this->materials[$i]['material_id']; ?>" > Delete </a>
+                                </td>
+                                </tr>
+                            <?php } ?>
+                        </table>
+                        </html>

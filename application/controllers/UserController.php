@@ -14,39 +14,51 @@ class UserController extends Zend_Controller_Action {
         // action body
     }
 
-        public function addAction()
-    {
-       
-       $form  = new Application_Form_Register();
-       
-       if($this->_request->isPost()){
-           if($form->isValid($this->_request->getParams())){
-               $user_info = $form->getValues();
-               $email=$form->getValue("user_email");
-               $name=$form->getValue("user_name");
-               $country=$form->getValue("country");
-               $gender = $form->getValue("gender");
-               $signature = $form->getValue("signature");
-                
-               $user_model = new Application_Model_User();
-               $user_model->addUser($user_info);
-               //to resend in adefault place     
-               $tr = new Zend_Mail_Transport_Sendmail('-freturn_to_grm3zend@gmail.com');
-                Zend_Mail::setDefaultTransport($tr);
+    public function addAction() {
+
+        $form = new Application_Form_Register();
+
+        if ($this->_request->isPost()) {
+            if ($form->isValid($this->_request->getParams())) {
+                $user_info = $form->getValues();
+                $email = $form->getValue("user_email");
+                $name = $form->getValue("user_name");
+                $country = $form->getValue("country");
+                $gender = $form->getValue("gender");
+                $signature = $form->getValue("signature");
+                $user_model = new Application_Model_User();
+                $user_model->addUser($user_info);
+
+                try {
+                    $config = array(
+                        'auth' => 'login',
+                        'username' => 'grm3zend@gmail.com',
+                        'password' => 'grm1234567',
+                        'ssl' => 'tls',
+                        'port' => 587
+                    );
+
+                    $mailTransport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+                    Zend_Mail::setDefaultTransport($mailTransport);
+                } catch (Zend_Exception $e) {
+                    //Do something with exception
+                }
+
                 // create object from zend_mail class
-                    $myemail=new Zend_Mail();
-                    // body of email
-                    $myemail->setBodyText("hi $name \n your email is:$email \n your gender is:$gender \n your signature is:$signature \n your country is:$country ")
-                            ->setFrom('grm3zend@gmail.com')//the sender
-                            ->addTo($email)//the receiver
-                            ->setSubject('Greetings and Salutations!')//subject
-                            ->send();//function to send email 
-                    $this->redirect("user/list");
-           }
-       }
-       
-	$this->view->form = $form;
-}
+                $myemail = new Zend_Mail();
+                // body of email
+                $myemail->setBodyText("Hi $name \n Your email is:$email \n Your gender is:$gender \n Your signature is:$signature \n Your country is:$country ")
+                        ->setFrom('grm3zend@gmail.com')//the sender
+                        ->addTo($email)//the receiver
+                        ->setSubject('Greetings and Salutations!')//subject
+                        ->send(); //function to send email 
+                $this->redirect("user/list");
+            }
+        }
+
+        $this->view->form = $form;
+    }
+
     public function loginAction() {
         // remove element from user form
         $userForm = new Application_Form_Register();
