@@ -8,7 +8,7 @@ class Application_Form_Material extends Zend_Form {
         $materialname = new Zend_Form_Element_File('material_name');
         $materialname->setLabel('Upload an image:')
                 ->setRequired()
-                ->setDestination('/var/www/zend-project/material/');
+                ->setDestination('/var/www/html/zend-project/material/');
                 
 
 
