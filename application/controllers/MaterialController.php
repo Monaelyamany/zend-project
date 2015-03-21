@@ -74,5 +74,14 @@ class MaterialController extends Zend_Controller_Action {
         }
         $this->redirect("material/list");
     }
+    
+    public function deleteAction() {
+        $id = $this->_request->getParam("material_id");
+        if (!empty($id)) {
+            $material_model = new Application_Model_Material();
+            $material_model->deleteMaterial($id);
+        }
+        $this->redirect("material/list");
+    }
 
 }

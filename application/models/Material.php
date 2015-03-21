@@ -39,4 +39,8 @@ class Application_Model_Material extends Zend_Db_Table_Abstract {
         }
     }
 
+    function deleteMaterial($id) {
+        return $this->delete("material_id=$id");
+    }
+
 }
