@@ -30,12 +30,16 @@
         <controllerFile controllerName="Comment">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Request">
+          <actionMethod actionName="index"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Register"/>
         <formFile formName="Login"/>
         <formFile formName="Material"/>
         <formFile formName="Course"/>
+        <formFile formName="Request"/>
       </formsDirectory>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory>
@@ -47,6 +51,7 @@
         <modelFile modelName="Comment"/>
         <modelFile modelName="Categorycourse"/>
         <modelFile modelName="Catcourse"/>
+        <modelFile modelName="Request"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
@@ -78,6 +83,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Index">
             <viewScriptFile forActionName="edit"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Request">
+            <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

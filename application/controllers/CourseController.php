@@ -53,39 +53,7 @@ class CourseController extends Zend_Controller_Action {
         }
         $this->view->courses = $allcatcourse;
     }
-    
-    
-    public function editAction() {
-        
-        $course_name = $this->_request->getParam("course_name");
-        $form = new Application_Form_Course();
-        if ($this->_request->isPost()) {
-            $form->getElement("course_id")
-                 ->removeValidator('Db_NoRecordExists');
-            
-              if ($form->isValid($this->_request->getParams())) {
-                $course_info = $form->getValues();
-                $course_model = new Application_Model_Course();
-                $row = $course_model->editcourse($course_info);
-                $this->redirect("course/list");
-            }
-        }
-        if (!empty($id)) {
-            $course_model = new Application_Model_Course();
-            $course = $course_model->getCourseById($id);     
-            $form->populate($course[0]);
-            
-
-           
-           
-        } else
-            $this->redirect("course/list");
-            
-
-            $this->view->form = $form;
-            $this->render('add');
-    }
-
+ 
     public function deleteAction() {
         $coursename = $this->_request->getParam("course_name");  
         if (!empty($coursename)) {
@@ -96,5 +64,38 @@ class CourseController extends Zend_Controller_Action {
         }
         $this->redirect("course/list");
     }
+    
+    public function editAction() {
+        $course_name = $this->_request->getParam("course_name");
+        $form = new Application_Form_Course();
+        if ($this->_request->isPost()) {
+            $form->getElement("course_name")
+                 ->removeValidator('Db_NoRecordExists');
+            
+              if ($form->isValid($this->_request->getParams())) {
+                $course_info = $form->getValues();
+                $course_model = new Application_Model_Course();
+                $row = $course_model->editCourse($course_info);
+//                $this->redirect("course/list");
+            }
+        }
+        if (!empty($course_name)) {
+            $categoryname = $this->_request->getParam("category_name");
+            $this->view->category_name = $categoryname;
 
+            $course_model = new Application_Model_Course();
+            $course_id = $course_model->getCourseByName($course_name); 
+            $course = $course_model->getCourseById($course_id);     
+            $form->populate($course[0]);
+ 
+        } else
+            $this->redirect("course/list");
+            
+
+            $this->view->form = $form;
+            $this->render('add');
+    }
 }
+    
+
+
