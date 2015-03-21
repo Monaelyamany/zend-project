@@ -1,0 +1,44 @@
+<html>
+    <body>
+        <div class="container">
+            <div class="row">  
+                <div class="col-md-12">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover" style="margin-top: 20px ">
+                            <tr class="info"> 
+                                <td class="text-center">User Name</td>
+                                <td class="text-center">User Photo</td>
+                                <td class="text-center">Request title</td>
+                                <td class="text-center"> Request text</td> 
+                                <td class="text-center"> Request date</td>
+                            </tr>
+                            <?php
+                            for ($i = 0; $i < count($this->requests); $i++) {
+                                echo '<tr>';
+                                foreach ($this->requests[$i] as $key => $value):
+                                    if ($key != 'request_id') {
+                                        if ($key == 'user_id') {
+                                            foreach ($value as $key => $name) {
+                                                if ($key == 'user_name' && $key == 'user_photo') {
+                                                    echo '<td class="text-center">';
+                                                    echo $name;
+                                                    if ($key == 'user_photo') {
+                                                        echo '<td class="text-center">';
+                                                        echo "<img src='/zend-project/images/users/$name' width='80' height='80'/>";
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            echo '<td class="text-center">';
+                                            echo $value;
+                                        }
+                                    }
+
+                                endforeach;
+                            }
+                            ?>
+                        </table>
+                        </html>
+
+
