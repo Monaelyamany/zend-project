@@ -3,7 +3,10 @@
 class CourseController extends Zend_Controller_Action {
 
     public function init() {
-        /* Initialize action controller here */
+        $authorization = Zend_Auth::getInstance();
+        if (!$authorization->hasIdentity()) {
+            $this->redirect("user/login");
+        } 
     }
 
     public function indexAction() {
@@ -87,10 +90,9 @@ class CourseController extends Zend_Controller_Action {
             $course_id = $course_model->getCourseByName($course_name);
             $course = $course_model->getCourseById($course_id);
             $form->populate($course[0]);
-        } else
+        } else {
             $this->redirect("course/list");
-
-
+        }
         $this->view->form = $form;
         $this->render('add');
     }

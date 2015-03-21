@@ -1,0 +1,27 @@
+1- create database if not exists cafe_system;
+
+2- create table if not exists users(user_id int unsigned auto_increment primary key,user_name varchar(100),email varchar(100) unique ,password varchar(50),ext varchar(50),profile_picture varchar(100),question varchar(100),answer varchar(200));
+
+
+3- create table product (product_id int unsigned auto_increment primary key,product_name varchar(100),price float ,product_picture varchar(100),status varchar(100));
+
+4-create table orders (order_id int unsigned auto_increment primary key,order_status varchar(100),notes varchar(100),total_price float,date timestamp,user_id int unsigned not null,foreign key (user_id) references users (user_id) on delete cascade);
+
+5-create table room (room_id int not null auto_increment primary key,room_no varchar(50));
+
+6-create table category (cat_id int not null auto_increment primary key,cat_name varchar(100));
+
+7-alter table users  add column room_id int ,add foreign key (room_id) references room (room_id);
+
+8-alter table product  add column cat_id int ,add foreign key (cat_id) references category (cat_id);
+
+9-create table order_product (order_id int unsigned not null,foreign key (order_id) references orders (order_id),product_id int unsigned not null,foreign key (product_id) references product (product_id),amount int,primary key(order_id,product_id));
+
+10- alter table orders add column room_id int ,add foreign key (room_id) references room (room_id);
+
+11-ALTER TABLE `orders` CHANGE `date` `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ;
+
+
+
+notes:
+1-delete unavaliable orders only;

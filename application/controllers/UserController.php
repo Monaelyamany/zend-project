@@ -5,58 +5,13 @@ class UserController extends Zend_Controller_Action {
     public function init() {
         /* to call it every time when using object */
         $authorization = Zend_Auth::getInstance();
-        if (!$authorization->hasIdentity() && $this->_request->getActionName() != 'login') {
-            //$this->redirect("user/login"); 
-        }
+        if (!$authorization->hasIdentity() && $this->getRequest()->getActionName() != "login") {
+            $this->redirect("user/login");
+        } 
     }
 
     public function indexAction() {
         // action body
-    }
-
-    public function addAction() {
-
-        $form = new Application_Form_Register();
-
-        if ($this->_request->isPost()) {
-            if ($form->isValid($this->_request->getParams())) {
-                $user_info = $form->getValues();
-                $email = $form->getValue("user_email");
-                $name = $form->getValue("user_name");
-                $country = $form->getValue("country");
-                $gender = $form->getValue("gender");
-                $signature = $form->getValue("signature");
-                $user_model = new Application_Model_User();
-                $user_model->addUser($user_info);
-
-                try {
-                    $config = array(
-                        'auth' => 'login',
-                        'username' => 'grm3zend@gmail.com',
-                        'password' => 'grm1234567',
-                        'ssl' => 'tls',
-                        'port' => 587
-                    );
-
-                    $mailTransport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
-                    Zend_Mail::setDefaultTransport($mailTransport);
-                } catch (Zend_Exception $e) {
-                    //Do something with exception
-                }
-
-                // create object from zend_mail class
-                $myemail = new Zend_Mail();
-                // body of email
-                $myemail->setBodyText("Hi $name \n Your email is:$email \n Your gender is:$gender \n Your signature is:$signature \n Your country is:$country ")
-                        ->setFrom('grm3zend@gmail.com')//the sender
-                        ->addTo($email)//the receiver
-                        ->setSubject('Greetings and Salutations!')//subject
-                        ->send(); //function to send email 
-                $this->redirect("user/list");
-            }
-        }
-
-        $this->view->form = $form;
     }
 
     public function loginAction() {
@@ -90,12 +45,80 @@ class UserController extends Zend_Controller_Action {
                     $storage = $autho->getStorage();
                     $storage->write($auth->getResultRowObject(array("user_id", "user_name", "user_photo")));
 
-                    $this->view->message = "valid user ";
+                    $login_info = $autho->getIdentity();
+                    $user_model = new Application_Model_User();
+                    $id = $login_info->user_id;
+                    $user_info = $user_model->getUserById($id);
+                    if ($user_info[0]['is_admin'] == 1) {
+                        $this->redirect("user/homeadmin");
+                    } else {
+                        $this->redirect('user/homeuser');
+                    }
                 } else {
                     $this->view->message = "not valid user ";
                 }
             }
         }
+    }
+
+    public function logoutAction() {
+        $autho = Zend_Auth::getInstance();
+        $autho->clearIdentity();
+        $this->redirect('/user/login');
+    }
+
+    public function homeadminAction() {
+        $this->view->message = 'homeadmin';
+    }
+
+    public function homeuserAction() {
+        $this->view->message = 'homeuser';
+    }
+
+    public function addAction() {
+
+        $form = new Application_Form_Register();
+
+        if ($this->_request->isPost()) {
+            if ($form->isValid($this->_request->getParams())) {
+                $user_info = $form->getValues();
+                $email = $form->getValue("user_email");
+                $name = $form->getValue("user_name");
+                $country = $form->getValue("country");
+                $gender = $form->getValue("gender");
+                $signature = $form->getValue("signature");
+                $user_model = new Application_Model_User();
+                $user_model->addUser($user_info);
+
+                try {
+                    $config = array(
+                        'auth' => 'login',
+                        'username' => 'grm3zend@gmail.com',
+                        'password' => 'grm1234567',
+                        'ssl' => 'tls',
+                        'port' => 587
+                    );
+
+                    $mailTransport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+                    Zend_Mail::setDefaultTransport($mailTransport);
+                } catch (Zend_Exception $e) {
+                    //Do something with exception
+                    echo "Error";
+                }
+
+                // create object from zend_mail class
+                $myemail = new Zend_Mail();
+                // body of email
+                $myemail->setBodyText("Hi $name \n Your email is:$email \n Your gender is:$gender \n Your signature is:$signature \n Your country is:$country ")
+                        ->setFrom('grm3zend@gmail.com')//the sender
+                        ->addTo($email)//the receiver
+                        ->setSubject('Greetings and Salutations!')//subject
+                        ->send(); //function to send email 
+                $this->redirect("user/list");
+            }
+        }
+
+        $this->view->form = $form;
     }
 
     public function listAction() {

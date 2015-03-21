@@ -1,0 +1,26 @@
+1-create database zenddb;
+
+2-use zenddb;
+
+3-create table users (user_id int unsigned auto_increment primary key,user_name varchar(100),gender varchar(50),country varchar(100),signature varchar(100),user_email varchar(200) unique,password varchar(100),user_photo varchar(100),is_admin boolean default false,is_banned boolean default false);
+
+4-create table category (category_id int unsigned auto_increment primary key,category_name varchar(200));
+
+5-create table courses(course_id int unsigned auto_increment primary key,course_name varchar(200));
+
+6-create table Type(Type_id int unsigned auto_increment primary key,Type_name varchar(200));
+
+7-create table materials (course_id int unsigned not null,foreign key (course_id) references courses (course_id) on delete cascade,material_id int unsigned auto_increment primary key,material_name varchar(200),is_show boolean default true,download_lock boolean default false);
+
+8-create table comment (comment_id int unsigned auto_increment primary key,comment_text varchar(500),comment_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,user_id int unsigned not null,foreign key (user_id) references users (user_id) on delete cascade,material_id int unsigned not null,foreign key (material_id) references materials (material_id) on delete cascade);
+
+9-create table requests (request_id int unsigned auto_increment primary key,request_text varchar(500),request_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,user_id int unsigned not null,foreign key (user_id) references users (user_id) on delete cascade);
+
+10- create table category_course (category_id int unsigned not null,foreign key (category_id) references category (category_id) on delete cascade,course_id int unsigned not null,foreign key (course_id) references courses (course_id) on delete cascade,primary key(category_id,course_id));
+
+11- create table user_course (user_id int unsigned not null,foreign key (user_id) references users (user_id) on delete cascade,course_id int unsigned not null,foreign key (course_id) references courses (course_id) on delete cascade,primary key(user_id,course_id));
+
+12-alter table requests add column request_title varchar(200);
+
+
+

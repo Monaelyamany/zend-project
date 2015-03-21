@@ -3,7 +3,10 @@
 class RequestController extends Zend_Controller_Action {
 
     public function init() {
-        /* Initialize action controller here */
+        $authorization = Zend_Auth::getInstance();
+        if (!$authorization->hasIdentity()) {
+            $this->redirect("user/login");
+        } 
     }
 
     public function indexAction() {
@@ -39,25 +42,18 @@ class RequestController extends Zend_Controller_Action {
 
         for ($i = 0; $i < count($request_data); $i++) {
             $user_id = $request_data[$i]['user_id'];
-        
 
-        $user_data = new Application_Model_User();
-        $user = $user_data->getUserById($user_id);
-        for ($j = 0; $j < count($user); $j++) {
-            $user_name = $user[$j]['user_name'];
-            $user_photo = $user[$j]['user_photo'];
-            $user_array = array($user_name, $user_photo);
+
+            $user_data = new Application_Model_User();
+            $user = $user_data->getUserById($user_id);
+            for ($j = 0; $j < count($user); $j++) {
+                $user_name = $user[$j]['user_name'];
+                $user_photo = $user[$j]['user_photo'];
+                $user_array = array($user_name, $user_photo);
+            }
+            $request_data[$i]['user_id'] = $user_array;
+            $this->view->requests = $request_data;
         }
-
-//        $requests = array($request_data, $user_array);
-//        var_dump($requests);
-//        exit();
-        
-        $request_data[$i]['user_id'] = $user_array;
-//        var_dump($request_data);
-//        exit();
-        $this->view->requests = $request_data;
     }
-  }
 
 }
