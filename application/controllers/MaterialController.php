@@ -7,7 +7,7 @@ class MaterialController extends Zend_Controller_Action {
     }
 
     public function indexAction() {
-        // action body
+// action body
     }
 
     public function addAction() {
@@ -23,7 +23,7 @@ class MaterialController extends Zend_Controller_Action {
                 $material_info = $form->getValues();
                 $material_model = new Application_Model_Material();
                 $material_model->addMaterial($course_id, $material_info);
-                //to resend in adefault place     
+//to resend in adefault place     
                 $this->redirect("material/list");
             }
         }
@@ -74,7 +74,7 @@ class MaterialController extends Zend_Controller_Action {
         }
         $this->redirect("material/list");
     }
-    
+
     public function deleteAction() {
         $id = $this->_request->getParam("material_id");
         if (!empty($id)) {
@@ -82,6 +82,36 @@ class MaterialController extends Zend_Controller_Action {
             $material_model->deleteMaterial($id);
         }
         $this->redirect("material/list");
+    }
+
+    public function editAction() {
+        $id = $this->_request->getParam("materialid");
+        $categoryname = $this->_request->getParam("categoryname");
+        $coursename = $this->_request->getParam("coursename");
+        $form = new Application_Form_Material();
+        if ($this->_request->isPost()) {
+            $form->getElement("material_name")
+                    ->removeValidator('Db_NoRecordExists');
+
+            if ($form->isValid($this->_request->getParams())) {
+                $material_info = $form->getValues();
+                $material_model = new Application_Model_Material();
+                $row = $material_model->editMaterial($material_info);
+                $this->redirect("material/list");
+            }
+        }
+        if (!empty($id)) {
+            $material_model = new Application_Model_Material();
+            $material = $material_model->getMaterialById($id);
+            $form->populate($material[0]);
+        } else {
+            $this->redirect("material/list");
+        }
+
+        $this->view->category_name = $categoryname;
+        $this->view->course_name = $coursename;
+        $this->view->form = $form;
+        $this->render('add');
     }
 
 }

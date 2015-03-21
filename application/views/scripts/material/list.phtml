@@ -62,7 +62,7 @@
                                 endforeach;
                                 ?>
                                 <td class="text-center">
-                                    <a class="btn btn-info" href="#" > Edit </a>
+                                    <a class="btn btn-info" href="<?php echo $this->baseUrl() ?>/material/edit/materialid/<?php echo $this->materials[$i]['material_id']; ?>/categoryname/<?php echo $this->materials[$i]['course_id']['category_name']; ?>/coursename/<?php echo $this->materials[$i]['course_id']['course_name']; ?>" > Edit </a>
                                 </td>
                                 <td class="text-center">
                                     <a class="btn btn-danger" href="<?php echo $this->baseUrl() ?>/material/delete/material_id/<?php echo $this->materials[$i]['material_id']; ?>" > Delete </a>

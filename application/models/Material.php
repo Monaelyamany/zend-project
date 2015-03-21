@@ -43,4 +43,8 @@ class Application_Model_Material extends Zend_Db_Table_Abstract {
         return $this->delete("material_id=$id");
     }
 
+    function editMaterial($data) {
+        return $this->update($data, "material_id=" . $data['material_id']);
+    }
+
 }
