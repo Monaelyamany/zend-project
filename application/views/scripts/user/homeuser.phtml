@@ -1,3 +1,17 @@
 <?php
 
 echo $this->message;
+echo '<br>';
+echo '<ul>';
+echo 'All Categories';
+for ($i = 0; $i < count($this->allcategory); $i++) {
+    foreach ($this->allcategory[$i] as $key => $value):
+        if ($key != 'category_id') {
+            echo '<li>';
+            echo '<a>';
+            echo $value;
+            echo '</a>';
+            
+        }
+    endforeach;
+}

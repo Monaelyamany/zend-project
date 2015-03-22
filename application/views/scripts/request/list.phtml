@@ -3,42 +3,41 @@
         <div class="container">
             <div class="row">  
                 <div class="col-md-12">
-
                     <div class="table-responsive">
                         <table class="table table-hover" style="margin-top: 20px ">
                             <tr class="info"> 
-                                <td class="text-center">User Name</td>
-                                <td class="text-center">User Photo</td>
-                                <td class="text-center">Request title</td>
-                                <td class="text-center"> Request text</td> 
-                                <td class="text-center"> Request date</td>
+                                <td class="text-center">User Requests</td>
                             </tr>
                             <?php
                             for ($i = 0; $i < count($this->requests); $i++) {
                                 echo '<tr>';
                                 foreach ($this->requests[$i] as $key => $value):
-                                    if ($key != 'request_id') {
+                                    if ($key != 'request_id' && $key != 'request_date') {
                                         if ($key == 'user_id') {
-                                            foreach ($value as $key => $name) {
-                                                if ($key == 'user_name' && $key == 'user_photo') {
-                                                    echo '<td class="text-center">';
-                                                    echo $name;
-                                                    if ($key == 'user_photo') {
-                                                        echo '<td class="text-center">';
-                                                        echo "<img src='/zend-project/public/images/users/$name' width='80' height='80'/>";
-                                                    }
-                                                }
-                                            }
+
+                                            echo '<td>';
+                                            echo "<img src='/zend-project/public/images/users/$value[1]' width='40' height='40'/>";
+
+
+                                            echo $value[0];
                                         } else {
-                                            echo '<td class="text-center">';
-                                            echo $value;
+                                            echo '<br>';
+                                            if ($key == 'request_title') {
+                                                echo'Request Title :' . $value;
+                                            }
+                                            if ($key == 'request_text') {
+                                                echo'Request Text :' . $value;
+                                            }
                                         }
                                     }
-
                                 endforeach;
+                                echo '</br>';
+                                ?>
+                                <a class="btn btn-info" href="<?php echo $this->baseUrl() ?>/request/reply/request_id/<?php echo $this->requests[$i]['request_id'] ?>/user_name/ <?php echo $this->requests[$i]['user_id'][0]; ?>" > Reply </a>
+
+                                <?php
                             }
                             ?>
                         </table>
                         </html>
-
 

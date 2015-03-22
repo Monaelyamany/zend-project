@@ -5,9 +5,9 @@ class UserController extends Zend_Controller_Action {
     public function init() {
         /* to call it every time when using object */
         $authorization = Zend_Auth::getInstance();
-        if (!$authorization->hasIdentity() && $this->getRequest()->getActionName() != "login") {
+        if (!$authorization->hasIdentity() && $this->getRequest()->getActionName() != "login" && $this->getRequest()->getActionName() != "add") {
             $this->redirect("user/login");
-        } 
+        }
     }
 
     public function indexAction() {
@@ -43,7 +43,7 @@ class UserController extends Zend_Controller_Action {
                     //get data from database and store it in session
                     $autho = Zend_Auth::getInstance();
                     $storage = $autho->getStorage();
-                    $storage->write($auth->getResultRowObject(array("user_id", "user_name", "user_photo")));
+                    $storage->write($auth->getResultRowObject(array("user_id", "user_name", "user_photo", "is_admin")));
 
                     $login_info = $autho->getIdentity();
                     $user_model = new Application_Model_User();
@@ -72,6 +72,9 @@ class UserController extends Zend_Controller_Action {
     }
 
     public function homeuserAction() {
+        $category_model = new Application_Model_Category();
+        $allcategory=$category_model->listCategories();
+        $this->view->allcategory=$allcategory;
         $this->view->message = 'homeuser';
     }
 

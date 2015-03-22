@@ -6,7 +6,13 @@ class CourseController extends Zend_Controller_Action {
         $authorization = Zend_Auth::getInstance();
         if (!$authorization->hasIdentity()) {
             $this->redirect("user/login");
-        } 
+        }
+        $user_info = $authorization->getStorage()->read();
+        if ($user_info != NULL) {
+            if ($user_info->is_admin != 1) {
+                $this->redirect('user/homeuser');
+            }
+        }
     }
 
     public function indexAction() {
