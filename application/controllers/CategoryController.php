@@ -3,6 +3,7 @@
 class CategoryController extends Zend_Controller_Action {
 
     public function init() {
+        
         $authorization = Zend_Auth::getInstance();
         if (!$authorization->hasIdentity()) {
             $this->redirect("user/login");
@@ -37,7 +38,6 @@ class CategoryController extends Zend_Controller_Action {
     }
 
     public function listAction() {
-
         $category_model = new Application_Model_Category();
         $this->view->categories = $category_model->listCategories();
     }

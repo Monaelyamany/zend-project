@@ -21,7 +21,7 @@ class Application_Model_Course extends Zend_Db_Table_Abstract {
     function getCourseById($id) {
         return $this->find($id)->toArray();
     }
-    
+
     function deleteCourse($id) {
         return $this->delete("course_id=$id");
     }
@@ -34,6 +34,4 @@ class Application_Model_Course extends Zend_Db_Table_Abstract {
     function editCourse($data) {
         return $this->update($data, "course_id=" . $data['course_id']);
     }
-    
-    
 }

@@ -20,4 +20,9 @@ class Application_Model_Catcourse extends Zend_Db_Table_Abstract {
         return $category_id[0]['category_id'];
     }
 
+    function getCourseId($id) {
+        $course_id = $this->fetchAll($where = array('category_id = ?' => $id))->toArray();
+        return $course_id;
+    }
+
 }

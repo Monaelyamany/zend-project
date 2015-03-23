@@ -1,17 +1,60 @@
-<?php
+<html>
+    <body>
+        <div class="container">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <a href='<?php echo $this->baseUrl() ?>/user/homeuser/msg/category'>All Categories</a>
+                    </div>
+                    <div class="panel-body">
+                        <?php
+                        echo '<br>';
+                        echo '<br>';
+                        if ($this->msg == 'category') {
+                            echo '<ul class="list-group">';
+                            echo '<br>';
+                            for ($i = 0; $i < count($this->allcategories); $i++) { //category   
+                                foreach ($this->allcategories[$i] as $key => $value):
+                                    $category_id = $this->allcategories[$i]['category_id'];
+                                    if ($key != 'category_id') {
+                                        echo '<li class="list-group-item">';
+                                        echo '<a href=' . $this->baseUrl() . '/user/homeuser/msg/category/cat_id/' . $category_id . '>' . $value . '</a>';
+                                        if ($this->course == "show" && $this->selectedcat == $category_id) {
+                                            echo '<ul class="list-group">';
+                                            for ($j = 0; $j < count($this->allcourses); $j++) { //courses to category
+                                                foreach ($this->allcourses[$j][0] as $key => $value):
+                                                    if ($key != 'course_id') {
+                                                        $course_id = $this->allcourses[$j][0]['course_id'];
+                                                        echo '<li class="list-group-item">';
+                                                        echo '<a href=' . $this->baseUrl() . '/user/homeuser/msg/category/cat_id/' . $category_id . '/course_id/' . $course_id . '>' . $value . '</a>';
+                                                        if ($this->selectedcourse == $course_id) {
+                                                            echo '<ul class="list-group">';
+                                                            for ($k = 0; $k < count($this->allmaterials); $k++) { //materials to courses                   
+                                                                $material_name = $this->allmaterials[$k]['material_name'];
+                                                                echo '<li class="list-group-item">';
+                                                                echo '<a href=' . $this->baseUrl() . '/user/homeuser/msg/category/cat_id/' . $category_id . '/course_id/' . $course_id . '>' . $material_name . '</a>';
+                                                                echo '</li>';
+                                                            }
+                                                            echo '</ul>';
+                                                        }
 
-echo $this->message;
-echo '<br>';
-echo '<ul>';
-echo 'All Categories';
-for ($i = 0; $i < count($this->allcategory); $i++) {
-    foreach ($this->allcategory[$i] as $key => $value):
-        if ($key != 'category_id') {
-            echo '<li>';
-            echo '<a>';
-            echo $value;
-            echo '</a>';
-            
-        }
-    endforeach;
-}
+                                                        echo '</li>';
+                                                    }
+                                                endforeach;
+                                            }
+                                            echo '</ul>';
+                                        }
+                                        echo '</li>';
+                                    }
+                                endforeach;
+                            }
+                            echo '</ul>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -47,4 +47,8 @@ class Application_Model_Material extends Zend_Db_Table_Abstract {
         return $this->update($data, "material_id=" . $data['material_id']);
     }
 
+    function getMaterialByCourseId($id) {
+        return $this->fetchAll($where = array('course_id = ?' => $id))->toArray();
+    }
+
 }
