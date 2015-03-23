@@ -111,10 +111,6 @@ class UserController extends Zend_Controller_Action {
             $material_data = $material_model->getMaterialById($material_id);
             $this->view->material_data = $material_data;
         }
-        $msg = $this->_request->getParam('msg');
-        if ($msg) {
-            $this->view->msg = $msg;
-        }
     }
 
     public function addAction() {

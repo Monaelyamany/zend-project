@@ -10,9 +10,8 @@
                     </div>
                     <div class="panel-body"> 
                         <?php
-                        echo $this->msg;
                         $material_id = $this->material_data[0]['material_id'];
-                        $material_name= $this->material_data[0]['material_name'];
+                        $material_name = $this->material_data[0]['material_name'];
                         echo $this->material_data[0]['material_name'];
                         echo '<br>';
                         if ($this->material_data[0]['download_lock'] == 0) { //not locked
@@ -20,20 +19,13 @@
                             echo '&nbsp';
                             $info = new SplFileInfo("$material_name");
                             $type = $info->getExtension();
-                            if ($type == "pptx" || $type == "pdf" || $type = "mp4" || $type == "jpeg" || $type = "jpg"){
+                            if ($type == "pptx" || $type == "pdf" || $type = "mp4" || $type == "jpeg" || $type = "jpg") {
                                 echo '<a class="btn btn-primary btn-sm" href=' . $this->baseUrl() . '/material/' . $material_name . '>View</a>';
                             }
-                            else
-                            {
-                                echo '<a class="btn btn-primary btn-sm" href=' . $this->baseUrl() . '/user/view/material_id/' . $material_id . '/msg/view >View</a>';
-                            }
-                            
                         } else {
-                            echo '<a class="btn btn-primary btn-sm" href="#">View</a>';
+                            echo '<a class="btn btn-primary btn-sm" href=' . $this->baseUrl() . '/material/' . $material_name . '>View</a>';
                         }
                         echo '<br>';
-                        
-                        
                         ?>
                     </div>
 
