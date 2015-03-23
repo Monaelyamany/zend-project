@@ -30,22 +30,24 @@
                                                         echo '<a href=' . $this->baseUrl() . '/user/homeuser/msg/category/cat_id/' . $category_id . '/course_id/' . $course_id . '>' . $value . '</a>';
                                                         if ($this->selectedcourse == $course_id) {
                                                             echo '<ul class="list-group">';
-                                                            for ($k = 0; $k < count($this->allmaterials); $k++) { //materials to courses                   
-                                                                $material_name = $this->allmaterials[$k]['material_name'];
-                                                                echo '<li class="list-group-item">';
-                                                                if ($this->allmaterials[$k]['is_show'] == 1) { //avaliable to show
-                                                                    echo $material_name;
-                                                                    if ($this->allmaterials[$k]['download_lock'] == 0) { //not locked
-                                                                        echo '<br>';
-                                                                        echo '<a class="btn btn-primary" href="#">Download</a>';
-                                                                        echo '&nbsp';
-                                                                        echo '<a class="btn btn-primary" href="#">View</a>';
+                                                            if ($this->allmaterials) {
+                                                                for ($k = 0; $k < count($this->allmaterials); $k++) { //materials to courses                   
+                                                                    $material_name = $this->allmaterials[$k]['material_name'];
+                                                                    $material_id = $this->allmaterials[$k]['material_id'];
+                                                                    echo '<li class="list-group-item">';
+                                                                    if ($this->allmaterials[$k]['is_show'] == 1) { //avaliable to show
+                                                                        echo '<a href=' . $this->baseUrl() . '/user/material/material_id/' . $material_id . '>' . $material_name . '</a>';
+                                                                    } else {
+                                                                        echo 'No avaliable material';
                                                                     }
+
+
+                                                                    echo '</li>';
                                                                 }
-
-
-                                                                echo '</li>';
+                                                            } else {
+                                                                echo 'No avaliable material';
                                                             }
+
                                                             echo '</ul>';
                                                         }
 

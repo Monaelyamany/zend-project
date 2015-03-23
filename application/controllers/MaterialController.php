@@ -117,4 +117,20 @@ class MaterialController extends Zend_Controller_Action {
         $this->render('add');
     }
 
+    public function downloadAction() {
+        $material_id = $this->_request->getParam("material_id");
+        $material_model = new Application_Model_Material();
+        $array = $material_model->getMaterialById($material_id);
+        $filename = $array[0]['material_name'];
+        $fin = fopen("/var/www/html/zend-project/public/material/$filename", "r");
+        $fout = fopen("/home/gehad/Desktop/download/$filename", "w");
+        stream_filter_append($fin, "string.rot13");
+        stream_filter_append($fout, "string.rot13");
+        stream_copy_to_stream($fin, $fout);
+        fclose($fin);
+        fclose($fout);
+
+        $this->redirect('user/homeuser');
+    }
+
 }

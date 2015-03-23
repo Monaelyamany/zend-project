@@ -10,7 +10,7 @@ class Application_Form_Comment extends Zend_Form {
                 ->setAttrib('class', 'form-control')
                 ->setRequired()
                 ->addFilter(new Zend_Filter_StripTags);
-        $submit = new Zend_Form_Element_Submit("submit");
+        $submit = new Zend_Form_Element_Submit("send");
         $submit->setAttrib('class', 'btn btn-info');
 
 

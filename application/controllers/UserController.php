@@ -81,28 +81,39 @@ class UserController extends Zend_Controller_Action {
             $cat_id = $this->_request->getParam('cat_id');
             if ($cat_id) {
                 $catcourse_model = new Application_Model_Catcourse();
-                $course_model=new Application_Model_Course();
+                $course_model = new Application_Model_Course();
                 $courses_id = $catcourse_model->getCourseId($cat_id);
-                $allcourses=array(); //all courses related to certain category
-                for ($i=0;$i<count($courses_id);$i++)
-                {
-                    $course_id=$courses_id[$i]['course_id'];
-                    $course_name=$course_model->getCourseById($course_id);
+                $allcourses = array(); //all courses related to certain category
+                for ($i = 0; $i < count($courses_id); $i++) {
+                    $course_id = $courses_id[$i]['course_id'];
+                    $course_name = $course_model->getCourseById($course_id);
                     array_push($allcourses, $course_name);
                 }
-                $this->view->selectedcat=$cat_id;
-                $this->view->course="show";
-                $this->view->allcourses=$allcourses;
+                $this->view->selectedcat = $cat_id;
+                $this->view->course = "show";
+                $this->view->allcourses = $allcourses;
             }
-            $course_id=$this->_request->getParam('course_id');
-            if($course_id){
-                $material_model=new Application_Model_Material();
-                $allmaterial=$material_model->getMaterialByCourseId($course_id);
-                $this->view->selectedcourse=$course_id;
-                $this->view->allmaterials=$allmaterial;
-                $this->view->material="show";
-                
+            $course_id = $this->_request->getParam('course_id');
+            if ($course_id) {
+                $material_model = new Application_Model_Material();
+                $allmaterial = $material_model->getMaterialByCourseId($course_id);
+                $this->view->selectedcourse = $course_id;
+                $this->view->allmaterials = $allmaterial;
+                $this->view->material = "show";
             }
+        }
+    }
+
+    public function materialAction() {
+        $material_id = $this->_request->getParam('material_id');
+        if ($material_id) {
+            $material_model = new Application_Model_Material();
+            $material_data = $material_model->getMaterialById($material_id);
+            $this->view->material_data = $material_data;
+        }
+        $msg = $this->_request->getParam('msg');
+        if ($msg) {
+            $this->view->msg = $msg;
         }
     }
 
@@ -195,7 +206,7 @@ class UserController extends Zend_Controller_Action {
         $this->render('add');
     }
 
-    function adminuserAction() {
+    public function adminuserAction() {
         $id = $this->_request->getParam("user_id");
         if (!empty($id)) {
             $user_model = new Application_Model_User();
@@ -205,7 +216,7 @@ class UserController extends Zend_Controller_Action {
         $this->redirect("user/list");
     }
 
-    function banunbanAction() {
+    public function banunbanAction() {
         $id = $this->_request->getParam("user_id");
         if (!empty($id)) {
             $user_model = new Application_Model_User();
