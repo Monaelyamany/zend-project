@@ -109,7 +109,23 @@ class UserController extends Zend_Controller_Action {
         if ($material_id) {
             $material_model = new Application_Model_Material();
             $material_data = $material_model->getMaterialById($material_id);
+            $comment_model=new Application_Model_Comment();
+            $comments=$comment_model->getCommentByMaterialId($material_id);
+            for($i=0;$i<count($comments);$i++){
+                $user_id=$comments[$i]['user_id'];
+                $user_model=new Application_Model_User();
+                $user_data=$user_model->getUserById($user_id);
+                $user=array();
+                echo '<br>'; echo '<br>'; echo '<br>'; echo '<br>';
+                array_push($user, $user_data[0]['user_name']);
+                array_push($user, $user_data[0]['user_photo']);
+                $comments[$i]['user_id']=$user;
+                echo '<br>';
+            }
+            
+            
             $this->view->material_data = $material_data;
+            $this->view->comments=$comments;
         }
     }
 

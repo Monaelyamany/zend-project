@@ -28,9 +28,121 @@
                         echo '<br>';
                         ?>
                     </div>
-
-                </div>  
+                </div>
+                <label>Comments</label>
+                <div>
+                    <div id='comments'>
+                        <?php
+                        for ($i = 0; $i < count($this->comments); $i++) {
+                            $comment_id = $this->comments[$i]['comment_id'];
+                            $comment_text = $this->comments[$i]['comment_text'];
+                            $user_name = $this->comments[$i]['user_id'][0];
+                            $user_photo = $this->comments[$i]['user_id'][1];
+                            echo '<p id=' . $comment_id . '>';
+                            echo "<img src='/zend-project/public/images/users/$user_photo' width='60' height='60'/>";
+                            echo '<b style="color:blue">' . $user_name . '</b>';
+                            echo '&nbsp';
+                            echo $comment_text;
+                            echo '<button style="float:right;margin-left:3px" class="btn btn-danger btn-sm" onclick="deletecomment(' . $comment_id . ')" >Delete</button>';
+                            echo '<button style="float:right" class="btn btn-primary btn-sm" onclick="editcomment(' . $comment_id . ')" >Edit</button>';
+                            echo '</p>';
+                        }
+                        ?>
+                    </div>
+                    <input id='comment' class="form-control" type="text" name="comment" placeholder='Enter Your comment ...'>
+                    <br>
+                    <button class="btn btn-primary btn-sm" onclick="addcomment(<?php echo $material_id ?>)">Add Comment</button>
+                </div>
             </div>
         </div>
+        <script>
+            function addcomment(materialid) {
+                var commenttext = document.getElementById('comment').value;
+                if (window.XMLHttpRequest) {
+                    ajaxRequest = new XMLHttpRequest();
+                }
+                else {
+                    ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                ajaxRequest.open("GET", "/zend-project/public/comment/add?comment_text=" + commenttext + "&materialid=" + materialid, true);
+                ajaxRequest.send();
+                ajaxRequest.onreadystatechange = function () {
+                    if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+                        var comment_id = ajaxRequest.responseText;
+                        var commentbody = document.createElement('p'); //parag of comment
+                        commentbody.setAttribute('id', comment_id);
+                        document.getElementById('comments').appendChild(commentbody);
+                        ajaxRequest.open('GET', "/zend-project/public/comment/select?comment_id=" + comment_id, true);
+                        ajaxRequest.send();
+                        ajaxRequest.onreadystatechange = function () {
+                            if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+                                var user_name = JSON.parse(ajaxRequest.responseText)[0];
+                                var user_photo = JSON.parse(ajaxRequest.responseText)[1];
+                                var img = document.createElement('img');
+                                img.setAttribute('src', '/zend-project/public/images/users/' + user_photo);
+                                img.setAttribute('height', '60');
+                                img.setAttribute('width', '60');
+                                commentbody.appendChild(img);
+                                var usernamebody = document.createElement('b');
+                                usernamebody.setAttribute('style', 'color:blue');
+                                usernamebody.innerHTML = user_name;
+                                commentbody.appendChild(usernamebody);
+                                commentbody.innerHTML += " " + commenttext;
+                                document.getElementById('comment').value = "";
+                                var delete_button = document.createElement('button');
+                                delete_button.setAttribute('style', 'float:right');
+                                var t = document.createTextNode("Delete");
+                                delete_button.appendChild(t);
+                                delete_button.setAttribute('class', 'btn btn-danger btn-sm');
+                                delete_button.onclick = function () {
+                                    deletecomment(comment_id);
+                                };
+                                commentbody.appendChild(delete_button);
+                            }
+                        };
+                    }
+                };
+            }
+
+            function deletecomment(comment_id) {
+                if (window.XMLHttpRequest) {
+                    ajaxRequest = new XMLHttpRequest();
+                }
+                else {
+                    ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                ajaxRequest.open("GET", "/zend-project/public/comment/delete?comment_id=" + comment_id, true);
+                ajaxRequest.send();
+                ajaxRequest.onreadystatechange = function () {
+                    if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+                        var commentbody = document.getElementById(comment_id);
+                        commentbody.parentNode.removeChild(commentbody);
+
+                    }
+                }
+            }
+
+            function editcomment(comment_id) {
+                var commentbody=document.getElementById(comment_id);
+                var last_text=commentbody.childNodes[2].data;
+                console.log(last_text);
+                var comment_edit=document.createElement('input');
+                comment_edit.setAttribute('type', 'text');
+                comment_edit.setAttribute('value',last_text);
+                comment_edit.setAttribute('class','form-control');
+                var br =document.createElement('br');
+                commentbody.appendChild(br);
+                commentbody.appendChild(comment_edit);
+//                if (window.XMLHttpRequest) {
+//                    ajaxRequest = new XMLHttpRequest();
+//                }
+//                else {
+//                    ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+//                }
+//                ajaxRequest.open("GET", "/zend-project/public/comment/edit?comment_id=" + comment_id+ "&comment_text=" + commenttext, true);
+//                ajaxRequest.send();
+            }
+
+        </script>
     </body>
 </html>
