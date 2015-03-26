@@ -17,7 +17,6 @@ class Application_Form_Register extends Zend_Form {
         $gender->setRequired()
                 ->setLabel("Gender:")
                 ->addMultiOptions(array(
-                    'S' => 'select',
                     'Male' => 'Male',
                     'Female' => 'Female'));
 

@@ -5,7 +5,7 @@ class UserController extends Zend_Controller_Action {
     public function init() {
         /* to call it every time when using object */
         $authorization = Zend_Auth::getInstance();
-        if (!$authorization->hasIdentity() && $this->getRequest()->getActionName() != "login" && $this->getRequest()->getActionName() != "add" && $this->getRequest()->getActionName() != "homeuser") {
+        if (!$authorization->hasIdentity() && $this->getRequest()->getActionName() != "login" && $this->getRequest()->getActionName() != "add" && $this->getRequest()->getActionName() != "homeuser" && $this->getRequest()->getActionName() != "material") {
             $this->redirect("user/login");
         }
     }
@@ -43,7 +43,7 @@ class UserController extends Zend_Controller_Action {
                     //get data from database and store it in session
                     $autho = Zend_Auth::getInstance();
                     $storage = $autho->getStorage();
-                    $storage->write($auth->getResultRowObject(array("user_id", "user_name", "user_photo", "is_admin")));
+                    $storage->write($auth->getResultRowObject(array("user_id", "user_name", "user_photo", "is_admin", "is_banned")));
 
                     $login_info = $autho->getIdentity();
                     $user_model = new Application_Model_User();
@@ -122,6 +122,7 @@ class UserController extends Zend_Controller_Action {
                 echo '<br>';
                 array_push($user, $user_data[0]['user_name']);
                 array_push($user, $user_data[0]['user_photo']);
+                array_push($user, $user_data[0]['user_id']);
                 $comments[$i]['user_id'] = $user;
                 echo '<br>';
             }
@@ -204,6 +205,11 @@ class UserController extends Zend_Controller_Action {
                 $user_info = $form->getValues();
                 $user_model = new Application_Model_User();
                 $row = $user_model->editUser($user_info);
+                $autho = Zend_Auth::getInstance();
+                $storage = $autho->getStorage();
+                $session_data=$storage->read();
+                $session_data->user_name=$user_info['user_name'];
+                $session_data->user_photo=$user_info['user_photo'];
                 if (!empty($id)) {
                     $this->redirect("user/list");
                 } else if (!empty($home_id)) {

@@ -1,9 +1,14 @@
 <html>
     <body>
         <div class="container">
-            <div class="col-md-offset-11 col-md-1">
-                <a class="btn btn-primary" href='<?php echo $this->baseUrl() ?>/request/add'>Add request</a>
-            </div> 
+            <?php
+            $authorization = Zend_Auth::getInstance();
+            if ($authorization->hasIdentity()) {
+                ?>
+                <div class="col-md-offset-11 col-md-1">
+                    <a class="btn btn-primary" href='<?php echo $this->baseUrl() ?>/request/add'>Add request</a>
+                </div>
+<?php } ?>
             <div class="col-md-offset-2 col-md-8">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->

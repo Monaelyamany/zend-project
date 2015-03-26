@@ -10,13 +10,17 @@
                     </div>
                     <div class="panel-body"> 
                         <?php
+                        $authorization = Zend_Auth::getInstance();
+                        $user_info = $authorization->getStorage()->read();
                         $material_id = $this->material_data[0]['material_id'];
                         $material_name = $this->material_data[0]['material_name'];
                         echo $this->material_data[0]['material_name'];
                         echo '<br>';
                         if ($this->material_data[0]['download_lock'] == 0) { //not locked
-                            echo '<a class="btn btn-primary btn-sm" href=' . $this->baseUrl() . '/material/download/material_id/' . $material_id . '>Download</a>';
-                            echo '&nbsp';
+                            if ($authorization->hasIdentity()) {
+                                echo '<a class="btn btn-primary btn-sm" href=' . $this->baseUrl() . '/material/download/material_id/' . $material_id . '>Download</a>';
+                                echo '&nbsp';
+                            }
                             $info = new SplFileInfo("$material_name");
                             $type = $info->getExtension();
                             if ($type == "pptx" || $type == "pdf" || $type = "mp4" || $type == "jpeg" || $type = "jpg") {
@@ -38,20 +42,39 @@
                             $comment_text = $this->comments[$i]['comment_text'];
                             $user_name = $this->comments[$i]['user_id'][0];
                             $user_photo = $this->comments[$i]['user_id'][1];
+                            $usercomment_id = $this->comments[$i]['user_id'][2];
                             echo '<p id=' . $comment_id . '>';
                             echo "<img src='/zend-project/public/images/users/$user_photo' width='60' height='60'/>";
                             echo '<b style="color:blue">' . $user_name . '</b>';
                             echo '&nbsp';
                             echo $comment_text;
-                            echo '<button style="float:right;margin-left:3px" class="btn btn-danger btn-sm" onclick="deletecomment(' . $comment_id . ')" >Delete</button>';
-                            echo '<button style="float:right" class="btn btn-primary btn-sm" onclick="editcomment(' . $comment_id . ')" >Edit</button>';
+                            if ($authorization->hasIdentity()) {
+                                if ($user_info != NULL) {
+                                    $user_id = $user_info->user_id;
+                                    if ($user_id == $usercomment_id) {
+                                        echo '<button style="float:right;margin-left:3px" class="btn btn-danger btn-sm" onclick="deletecomment(' . $comment_id . ')" >Delete</button>';
+                                        echo '<button style="float:right" class="btn btn-primary btn-sm" onclick="editcomment(' . $comment_id . ')" >Edit</button>';
+                                    }
+                                }
+                            }
                             echo '</p>';
                         }
                         ?>
                     </div>
-                    <input id='comment' class="form-control" type="text" name="comment" placeholder='Enter Your comment ...'>
-                    <br>
-                    <button class="btn btn-primary btn-sm" onclick="addcomment(<?php echo $material_id ?>)">Add Comment</button>
+                    <?php
+                    if ($authorization->hasIdentity()) {
+                        if ($user_info != NULL) {
+                            $user_banned = $user_info->is_banned;
+                            if ($user_banned == 0) {
+                                ?>
+                                            <input id='comment' class="form-control" type="text" name="comment" placeholder='Enter Your comment ...'>
+                                            <br>
+                                            <button class="btn btn-primary btn-sm" onclick="addcomment(<?php echo $material_id ?>)">Add Comment</button>
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>

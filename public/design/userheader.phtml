@@ -1,4 +1,10 @@
-
+<?php
+$authorization = Zend_Auth::getInstance();
+$user_info = $authorization->getStorage()->read();
+$user_id = $user_info->user_id;
+$user_name = $user_info->user_name;
+$user_photo = $user_info->user_photo;
+?>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -7,24 +13,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
             </button>
-            <a class="navbar-brand" href="<?php echo $this->baseUrl() ?>">WebSiteName</a>
+            <a class="navbar-brand" href="<?php echo $this->baseUrl() ?>">GRM Learning</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="active">
                     <a href="<?php echo $this->baseUrl() ?>/user/homeuser">Home</a></li>
+                <li><a href="<?php echo $this->baseUrl() ?>/user/edit/home_id/<?php echo $user_id ?>">Update Profile</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <?php
-                $authorization = Zend_Auth::getInstance();
-                $user_info = $authorization->getStorage()->read();
-                $user_id=$user_info->user_id;
-                ?>
-                <li><a href="<?php echo $this->baseUrl() ?>/user/edit/home_id/<?php echo $user_id ?>"><span class="glyphicon glyphicon-log-out"></span>Update Profile</a></li>
                 <li><a href="<?php echo $this->baseUrl() ?>/user/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-
             </ul>
 
         </div>
     </div>
 </nav>
+
+<span class="glyphicon glyphicon-user" style="float: right;margin-right :50px "><?php echo $user_name; ?></span>
+<br>
