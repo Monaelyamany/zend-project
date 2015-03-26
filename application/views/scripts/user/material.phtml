@@ -90,7 +90,7 @@
                                 commentbody.innerHTML += " " + commenttext;
                                 document.getElementById('comment').value = "";
                                 var delete_button = document.createElement('button');
-                                delete_button.setAttribute('style', 'float:right');
+                                delete_button.setAttribute('style', 'float:right;margin-left:3px');
                                 var t = document.createTextNode("Delete");
                                 delete_button.appendChild(t);
                                 delete_button.setAttribute('class', 'btn btn-danger btn-sm');
@@ -98,6 +98,16 @@
                                     deletecomment(comment_id);
                                 };
                                 commentbody.appendChild(delete_button);
+                                var edit_button = document.createElement('button');
+                                edit_button.setAttribute('style', 'float:right');
+                                var tr = document.createTextNode("Edit");
+                                edit_button.appendChild(tr);
+                                edit_button.setAttribute('class', 'btn btn-primary btn-sm');
+                                edit_button.onclick = function () {
+                                    editcomment(comment_id);
+                                };
+                                commentbody.appendChild(edit_button);
+
                             }
                         };
                     }
@@ -119,30 +129,45 @@
                         commentbody.parentNode.removeChild(commentbody);
 
                     }
-                }
+                };
             }
 
             function editcomment(comment_id) {
-                var commentbody=document.getElementById(comment_id);
-                var last_text=commentbody.childNodes[2].data;
-                console.log(last_text);
-                var comment_edit=document.createElement('input');
+                var commentbody = document.getElementById(comment_id);
+                var edit_button = commentbody.childNodes[4];
+                edit_button.setAttribute('disabled', 'true');
+                var last_text = commentbody.childNodes[2].data;
+                var comment_edit = document.createElement('input');
                 comment_edit.setAttribute('type', 'text');
-                comment_edit.setAttribute('value',last_text);
-                comment_edit.setAttribute('class','form-control');
-                var br =document.createElement('br');
+                comment_edit.setAttribute('value', last_text);
+                comment_edit.setAttribute('class', 'form-control');
+                var br = document.createElement('br');
                 commentbody.appendChild(br);
                 commentbody.appendChild(comment_edit);
-//                if (window.XMLHttpRequest) {
-//                    ajaxRequest = new XMLHttpRequest();
-//                }
-//                else {
-//                    ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
-//                }
-//                ajaxRequest.open("GET", "/zend-project/public/comment/edit?comment_id=" + comment_id+ "&comment_text=" + commenttext, true);
-//                ajaxRequest.send();
-            }
+                comment_edit.onkeydown = function (e) {
+                    if (e.keyCode === 13) {
+                        var edit_text = commentbody.childNodes[6].value;
+                        if (window.XMLHttpRequest) {
+                            ajaxRequest = new XMLHttpRequest();
+                        }
+                        else {
+                            ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        ajaxRequest.open("GET", "/zend-project/public/comment/edit?comment_id=" + comment_id + "&comment_text=" + edit_text, true);
+                        ajaxRequest.send();
+                        ajaxRequest.onreadystatechange = function () {
+                            if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+                                commentbody.childNodes[2].data = " " + edit_text;
+                                comment_edit.parentNode.removeChild(comment_edit);
+                                edit_button.removeAttribute('disabled');
+                            }
+                        };
+                    }
 
+                };
+
+
+            }
         </script>
     </body>
 </html>

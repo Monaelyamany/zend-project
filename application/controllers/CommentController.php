@@ -60,7 +60,8 @@ class CommentController extends Zend_Controller_Action {
         $comment_text = $this->_request->getParam("comment_text");
         if (!empty($comment_id)) {
             $comment_model = new Application_Model_Comment();
-            $comment_model->updateComment($comment_id, $comment_text);
+            $comment_model->editComment($comment_id, $comment_text);
+            exit();
         }
     }
 

@@ -5,7 +5,7 @@ class UserController extends Zend_Controller_Action {
     public function init() {
         /* to call it every time when using object */
         $authorization = Zend_Auth::getInstance();
-        if (!$authorization->hasIdentity() && $this->getRequest()->getActionName() != "login" && $this->getRequest()->getActionName() != "add") {
+        if (!$authorization->hasIdentity() && $this->getRequest()->getActionName() != "login" && $this->getRequest()->getActionName() != "add" && $this->getRequest()->getActionName() != "homeuser") {
             $this->redirect("user/login");
         }
     }
@@ -109,23 +109,26 @@ class UserController extends Zend_Controller_Action {
         if ($material_id) {
             $material_model = new Application_Model_Material();
             $material_data = $material_model->getMaterialById($material_id);
-            $comment_model=new Application_Model_Comment();
-            $comments=$comment_model->getCommentByMaterialId($material_id);
-            for($i=0;$i<count($comments);$i++){
-                $user_id=$comments[$i]['user_id'];
-                $user_model=new Application_Model_User();
-                $user_data=$user_model->getUserById($user_id);
-                $user=array();
-                echo '<br>'; echo '<br>'; echo '<br>'; echo '<br>';
+            $comment_model = new Application_Model_Comment();
+            $comments = $comment_model->getCommentByMaterialId($material_id);
+            for ($i = 0; $i < count($comments); $i++) {
+                $user_id = $comments[$i]['user_id'];
+                $user_model = new Application_Model_User();
+                $user_data = $user_model->getUserById($user_id);
+                $user = array();
+                echo '<br>';
+                echo '<br>';
+                echo '<br>';
+                echo '<br>';
                 array_push($user, $user_data[0]['user_name']);
                 array_push($user, $user_data[0]['user_photo']);
-                $comments[$i]['user_id']=$user;
+                $comments[$i]['user_id'] = $user;
                 echo '<br>';
             }
-            
-            
+
+
             $this->view->material_data = $material_data;
-            $this->view->comments=$comments;
+            $this->view->comments = $comments;
         }
     }
 
@@ -191,7 +194,8 @@ class UserController extends Zend_Controller_Action {
     }
 
     public function editAction() {
-        $id = $this->_request->getParam("user_id");
+        $id = $this->_request->getParam("adminuser_id");
+        $home_id = $this->_request->getParam("home_id");
         $form = new Application_Form_Register();
         if ($this->_request->isPost()) {
             $form->getElement("user_email")->removeValidator("Zend_Validate_Db_NoRecordExists");
@@ -200,13 +204,21 @@ class UserController extends Zend_Controller_Action {
                 $user_info = $form->getValues();
                 $user_model = new Application_Model_User();
                 $row = $user_model->editUser($user_info);
-                $this->redirect("user/list");
+                if (!empty($id)) {
+                    $this->redirect("user/list");
+                } else if (!empty($home_id)) {
+                    $this->redirect("user/homeuser");
+                }
             }
         }
-        if (!empty($id)) {
+        if (!empty($id) || !empty($home_id)) {
             $form->getElement("user_email")->setAttrib('readonly', 'readonly');
             $user_model = new Application_Model_User();
-            $user = $user_model->getUserById($id);
+            if ($id) {
+                $user = $user_model->getUserById($id);
+            } else if ($home_id) {
+                $user = $user_model->getUserById($home_id);
+            }
             $form->populate($user[0]);
         } else
             $this->redirect("user/list");

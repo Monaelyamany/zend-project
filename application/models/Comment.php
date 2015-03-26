@@ -27,7 +27,7 @@ class Application_Model_Comment extends Zend_Db_Table_Abstract {
     }
 
     public function editComment($id, $text) {
-        return $this->update("comment_text=" . $text, "comment_id=" . $id);
+        return $this->update(array('comment_text'=> $text), "comment_id=" . $id);
     }
 
 }
