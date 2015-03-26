@@ -29,10 +29,14 @@ class Application_Model_User extends Zend_Db_Table_Abstract {
     }
 
     function editUser($data) {
-        if (!empty($data['password']))
+        if (empty($data['user_photo'])) {
+            unset($data['user_photo']);
+        }
+        if (!empty($data['password'])) {
             $data['password'] = md5($data['password']);
-        else
+        } else {
             unset($data['password']);
+        }
         return $this->update($data, "user_id=" . $data['user_id']);
     }
 

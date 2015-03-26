@@ -201,6 +201,7 @@ class UserController extends Zend_Controller_Action {
         if ($this->_request->isPost()) {
             $form->getElement("user_email")->removeValidator("Zend_Validate_Db_NoRecordExists");
             $form->getElement("password")->setRequired($flag = FALSE);
+            $form->getElement("user_photo")->setRequired($flag=FALSE);
             if ($form->isValid($this->_request->getParams())) {
                 $user_info = $form->getValues();
                 $user_model = new Application_Model_User();

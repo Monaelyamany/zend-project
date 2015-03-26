@@ -4,6 +4,10 @@ class RequestController extends Zend_Controller_Action {
 
     public function init() {
         /* Initialize action controller here */
+        $authorization = Zend_Auth::getInstance();
+        if (!$authorization->hasIdentity()) {
+            $this->redirect("user/login");
+        }
     }
 
     public function indexAction() {
@@ -19,11 +23,11 @@ class RequestController extends Zend_Controller_Action {
                 $request_info = $form->getValues();
                 $authorization = Zend_Auth::getInstance();
                 $user_info = $authorization->getStorage()->read();
-                $user_id=$user_info->user_id;
+                $user_id = $user_info->user_id;
                 $title = $form->getValue("request_title");
                 $text = $form->getValue("request_text");
                 $request_model = new Application_Model_Request();
-                $request_model->addRequest($user_id,$request_info);
+                $request_model->addRequest($user_id, $request_info);
                 //to resend in adefault place     
 
                 $this->redirect("request/add");
@@ -34,24 +38,32 @@ class RequestController extends Zend_Controller_Action {
     }
 
     public function listAction() {
+        $authorization = Zend_Auth::getInstance();
+        $user_info = $authorization->getStorage()->read();
+        if ($user_info != NULL) {
+            if ($user_info->is_admin != 1) {
+                $this->redirect('user/homeuser');
+            } else {
 
-        $request_model = new Application_Model_Request();
-        $request_data = $request_model->listRequests();
+                $request_model = new Application_Model_Request();
+                $request_data = $request_model->listRequests();
 
-        for ($i = 0; $i < count($request_data); $i++) {
-            $user_id = $request_data[$i]['user_id'];
+                for ($i = 0; $i < count($request_data); $i++) {
+                    $user_id = $request_data[$i]['user_id'];
 
 
-            $user_data = new Application_Model_User();
-            $user = $user_data->getUserById($user_id);
-            for ($j = 0; $j < count($user); $j++) {
-                $user_name = $user[$j]['user_name'];
-                $user_photo = $user[$j]['user_photo'];
-                $user_array = array($user_name, $user_photo);
-                $request_data[$i]['user_id'] = $user_array;
+                    $user_data = new Application_Model_User();
+                    $user = $user_data->getUserById($user_id);
+                    for ($j = 0; $j < count($user); $j++) {
+                        $user_name = $user[$j]['user_name'];
+                        $user_photo = $user[$j]['user_photo'];
+                        $user_array = array($user_name, $user_photo);
+                        $request_data[$i]['user_id'] = $user_array;
+                    }
+                    $requests = array($request_data, $user_array);
+                    $this->view->requests = $request_data;
+                }
             }
-            $requests = array($request_data, $user_array);
-            $this->view->requests = $request_data;
         }
     }
 

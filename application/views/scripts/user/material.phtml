@@ -51,7 +51,8 @@
                             if ($authorization->hasIdentity()) {
                                 if ($user_info != NULL) {
                                     $user_id = $user_info->user_id;
-                                    if ($user_id == $usercomment_id) {
+                                    $admin=$user_info->is_admin;
+                                    if ($user_id == $usercomment_id||$admin==1) {
                                         echo '<button style="float:right;margin-left:3px" class="btn btn-danger btn-sm" onclick="deletecomment(' . $comment_id . ')" >Delete</button>';
                                         echo '<button style="float:right" class="btn btn-primary btn-sm" onclick="editcomment(' . $comment_id . ')" >Edit</button>';
                                     }
