@@ -5,13 +5,13 @@ class Application_Form_Register extends Zend_Form {
     public function init() {
         $this->setMethod("post");
         $id = new Zend_Form_Element_Hidden("user_id");
-        
+
         $username = new Zend_Form_Element_Text("user_name");
         $username->setAttrib('class', 'form-control');
         $username->setLabel("Username: ");
         $username->setRequired();
         $username->addFilter(new Zend_Filter_StripTags);
-        
+
         $gender = new Zend_Form_Element_Select("gender");
         $gender->setAttrib('class', 'form-control');
         $gender->setRequired()
@@ -41,9 +41,7 @@ class Application_Form_Register extends Zend_Form {
         $country->setAttrib('class', 'form-control');
         $country->setRequired()
                 ->setLabel("country:")
-                ->addMultiOptions(array(
-                    'US' => 'united satets',
-                    'UK' => 'England'));
+                ->addMultiOptions(Zend_Locale::getTranslationList('Territory', 'en', 2), Zend_Locale::getTranslationList('Territory', 'en', 2));
 
 
         $password = new Zend_Form_Element_Password("password");
@@ -64,4 +62,5 @@ class Application_Form_Register extends Zend_Form {
 
         $this->addElements(array($id, $username, $email, $gender, $password, $signature, $country, $photo, $submit));
     }
+
 }

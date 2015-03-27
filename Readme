@@ -1,0 +1,10 @@
+admin account 
+email:admin@gmail.com 
+password:12345
+
+user account 
+email:gehad_933@hotmail.com
+password:12345
+
+for download files :
+change path to any folder to save the downloadedmaterials (file : MaterialController line:175)

@@ -278,4 +278,24 @@ class UserController extends Zend_Controller_Action {
         $this->redirect("user/list");
     }
 
+    public function twitterAction() {
+        $material_name = $this->_request->getParam('materialname');
+        $twitter = new Zend_Service_Twitter(array(
+            'access_token' => array(// or use "accessToken" as the key; both work
+                'token' => '1543441370-ITMAdauzIHRNRP4ZXHZyWxs9r3hgdPJuq8PCRgh',
+                'secret' => '0QcZQPexpoSfL6GwyMDtjR7UEPzQ5aGoFzWHWZB3o2jMs',
+            ),
+            'oauth_options' => array(// or use "oauthOptions" as the key; both work
+                'consumerKey' => '5tflYgkWdyOiVgkTbB5Eiy5xy',
+                'consumerSecret' => 'CHzraviPDx8ZSyennQcCDv40wh98BOGcnwXSDQqFx1Jyf1dZjR',
+            ),
+        ));
+        $response = $twitter->account->verifyCredentials();
+        $response = $response->toValue();
+        $response = get_object_vars($response);
+        $user_id = $response['id'];
+        $response = $twitter->statuses->update('http://localhost/zend-project/public/material/' . $material_name . '', $user_id);
+        $this->redirect('user/homeuser');
+    }
+
 }
