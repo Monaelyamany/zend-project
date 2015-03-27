@@ -12,6 +12,7 @@
                                 <td class="text-center">Material Name</td>
                                 <td class="text-center">Show/Hidden</td>
                                 <td class="text-center">Download lock</td>
+                                <td class="text-center">No. of downloads</td>
                                 <td class="text-center">Edit</td>
                                 <td class="text-center">Delete</td>
                             </tr>
@@ -53,6 +54,13 @@
                                                 echo '<br>';
                                                 echo "<a href='./lockdownload/material_id/$id'>Lock</a>";
                                             }
+                                        } elseif ($key == 'no_of_download') {
+                                            echo '<td class="text-center">';
+                                            if ($value == NULL)
+                                                echo '0';
+                                            else {
+                                                echo $value;
+                                            }
                                         } else {
                                             echo '<td class="text-center">';
                                             echo "<a href='/zend-project/public/user/material/material_id/$id'>$value</a>";
@@ -69,6 +77,6 @@
                                     <a class="btn btn-danger" href="<?php echo $this->baseUrl() ?>/material/delete/material_id/<?php echo $this->materials[$i]['material_id']; ?>" > Delete </a>
                                 </td>
                                 </tr>
-                            <?php } ?>
+<?php } ?>
                         </table>
                         </html>

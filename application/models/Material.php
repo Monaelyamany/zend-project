@@ -51,4 +51,15 @@ class Application_Model_Material extends Zend_Db_Table_Abstract {
         return $this->fetchAll($where = array('course_id = ?' => $id))->toArray();
     }
 
+    function downloadMaterial($id) {
+        $material = $this->find($id)->toArray();
+        $no_of_download = $material[0]['no_of_download'];
+        if ($no_of_download == NULL) {
+            $no_of_download = 1;
+        } else {
+            $no_of_download+=1;
+        }
+        $this->update(array('no_of_download' => $no_of_download), "material_id=" . $id);
+    }
+
 }

@@ -16,46 +16,56 @@ class UserController extends Zend_Controller_Action {
 
     public function loginAction() {
         // remove element from user form
-        $userForm = new Application_Form_Register();
-        $userForm->removeElement("user_name");
-        $userForm->removeElement("user_id");
-        $userForm->removeElement("gender");
-        $userForm->removeElement("signature");
-        $userForm->removeElement("country");
-        $userForm->removeElement("user_photo");
-        $userForm->getElement("user_email")->removeValidator('Db_NoRecordExists');
-        $this->view->form = $userForm;
-        //check if form is valid
-        if ($this->_request->isPost()) {
-            if ($userForm->isValid($this->getRequest()->getParams())) {
-                //get values of email password 
-                $email = $userForm->getValue("user_email");
-                $password = $userForm->getValue("password");
+        $authorization = Zend_Auth::getInstance();
+        $user_info = $authorization->getStorage()->read();
+        if ($user_info != NULL) {
+            if ($user_info->is_admin == 1) {
+                $this->redirect("user/homeadmin");
+            } else {
+                $this->redirect("user/homeuser");
+            }
+        } else {
+            $userForm = new Application_Form_Register();
+            $userForm->removeElement("user_name");
+            $userForm->removeElement("user_id");
+            $userForm->removeElement("gender");
+            $userForm->removeElement("signature");
+            $userForm->removeElement("country");
+            $userForm->removeElement("user_photo");
+            $userForm->getElement("user_email")->removeValidator('Db_NoRecordExists');
+            $this->view->form = $userForm;
+            //check if form is valid
+            if ($this->_request->isPost()) {
+                if ($userForm->isValid($this->getRequest()->getParams())) {
+                    //get values of email password 
+                    $email = $userForm->getValue("user_email");
+                    $password = $userForm->getValue("password");
 
 
-                //check if user is authenticated or not
-                $db = Zend_Db_Table::getDefaultAdapter();
-                $auth = new Zend_Auth_Adapter_DbTable($db, 'users', "user_email", "password");
-                $auth->setIdentity($email);
-                $auth->setCredential(md5($password));
-                $row = $auth->authenticate();
-                if ($row->isValid()) {
-                    //get data from database and store it in session
-                    $autho = Zend_Auth::getInstance();
-                    $storage = $autho->getStorage();
-                    $storage->write($auth->getResultRowObject(array("user_id", "user_name", "user_photo", "is_admin", "is_banned")));
+                    //check if user is authenticated or not
+                    $db = Zend_Db_Table::getDefaultAdapter();
+                    $auth = new Zend_Auth_Adapter_DbTable($db, 'users', "user_email", "password");
+                    $auth->setIdentity($email);
+                    $auth->setCredential(md5($password));
+                    $row = $auth->authenticate();
+                    if ($row->isValid()) {
+                        //get data from database and store it in session
+                        $autho = Zend_Auth::getInstance();
+                        $storage = $autho->getStorage();
+                        $storage->write($auth->getResultRowObject(array("user_id", "user_name", "user_photo", "is_admin", "is_banned")));
 
-                    $login_info = $autho->getIdentity();
-                    $user_model = new Application_Model_User();
-                    $id = $login_info->user_id;
-                    $user_info = $user_model->getUserById($id);
-                    if ($user_info[0]['is_admin'] == 1) {
-                        $this->redirect("user/homeadmin");
+                        $login_info = $autho->getIdentity();
+                        $user_model = new Application_Model_User();
+                        $id = $login_info->user_id;
+                        $user_info = $user_model->getUserById($id);
+                        if ($user_info[0]['is_admin'] == 1) {
+                            $this->redirect("user/homeadmin");
+                        } else {
+                            $this->redirect('user/homeuser');
+                        }
                     } else {
-                        $this->redirect('user/homeuser');
+                        $this->view->message = "not valid user ";
                     }
-                } else {
-                    $this->view->message = "not valid user ";
                 }
             }
         }
@@ -69,6 +79,9 @@ class UserController extends Zend_Controller_Action {
 
     public function homeadminAction() {
         $this->view->message = 'homeadmin';
+        $user_model = new Application_Model_User();
+        $allusers = $user_model->listUsers();
+        $this->view->allusers = $allusers;
     }
 
     public function homeuserAction() {
@@ -197,20 +210,20 @@ class UserController extends Zend_Controller_Action {
     public function editAction() {
         $id = $this->_request->getParam("adminuser_id");
         $home_id = $this->_request->getParam("home_id");
+        $autho = Zend_Auth::getInstance();
         $form = new Application_Form_Register();
         if ($this->_request->isPost()) {
             $form->getElement("user_email")->removeValidator("Zend_Validate_Db_NoRecordExists");
             $form->getElement("password")->setRequired($flag = FALSE);
-            $form->getElement("user_photo")->setRequired($flag=FALSE);
+            $form->getElement("user_photo")->setRequired($flag = FALSE);
             if ($form->isValid($this->_request->getParams())) {
                 $user_info = $form->getValues();
                 $user_model = new Application_Model_User();
                 $row = $user_model->editUser($user_info);
-                $autho = Zend_Auth::getInstance();
                 $storage = $autho->getStorage();
-                $session_data=$storage->read();
-                $session_data->user_name=$user_info['user_name'];
-                $session_data->user_photo=$user_info['user_photo'];
+                $session_data = $storage->read();
+                $session_data->user_name = $user_info['user_name'];
+                $session_data->user_photo = $user_info['user_photo'];
                 if (!empty($id)) {
                     $this->redirect("user/list");
                 } else if (!empty($home_id)) {
@@ -219,6 +232,10 @@ class UserController extends Zend_Controller_Action {
             }
         }
         if (!empty($id) || !empty($home_id)) {
+            $session_info = $autho->getStorage()->read();
+            $session_id = $session_info->user_id;
+            $admin = $session_info->is_admin;
+
             $form->getElement("user_email")->setAttrib('readonly', 'readonly');
             $user_model = new Application_Model_User();
             if ($id) {
@@ -226,7 +243,11 @@ class UserController extends Zend_Controller_Action {
             } else if ($home_id) {
                 $user = $user_model->getUserById($home_id);
             }
-            $form->populate($user[0]);
+            if ($session_id == $id || $session_id == $home_id || $admin == 1) {
+                $form->populate($user[0]);
+            } else {
+                $this->redirect("user/homeuser");
+            }
         } else
             $this->redirect("user/list");
 
